@@ -20,3 +20,10 @@ test('Scope describes min, max and last', () => {
 test.each([[[]], [[2]], [[1, 1]], [[1, 5, 2]]])('Spark renders %j without NaN', (values) => {
   expect(render(Spark, { props: { values } }).body).not.toMatch(/NaN|Infinity/);
 });
+
+test('Scope keeps its outer x labels inside the frame', () => {
+  const body = render(Scope, { props: { points: pts([3, 9, 4, 12, 30]), label: 'clicks' } }).body;
+  const xs = [...body.matchAll(/<text([^>]*)>\d\d-\d\d<\/text>/g)].map((m) => m[1].match(/text-anchor="(\w+)"/)?.[1]);
+  expect(xs[0]).toBe('start');
+  expect(xs[xs.length - 1]).toBe('end');
+});

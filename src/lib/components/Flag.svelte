@@ -27,7 +27,8 @@
       type="checkbox"
       {name}
       value="on"
-      bind:checked={/** @type {boolean} */ (value)}
+      checked={value === true}
+      onchange={(e) => (value = e.currentTarget.checked)}
       onkeydown={enterToggles}
       class="peer sr-only"
     />

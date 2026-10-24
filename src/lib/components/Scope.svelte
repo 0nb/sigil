@@ -46,8 +46,14 @@
         >{format(line.v)}</text
       >
     {/each}
-    {#each chart.xLabels as l (l.t)}
-      <text x={l.x} y={height - 4} text-anchor="middle" class="fill-dim" font-size="10">{formatT(l.t)}</text>
+    {#each chart.xLabels as l, i (l.t)}
+      <text
+        x={l.x}
+        y={height - 4}
+        text-anchor={i === 0 ? 'start' : i === chart.xLabels.length - 1 ? 'end' : 'middle'}
+        class="fill-dim"
+        font-size="10">{formatT(l.t)}</text
+      >
     {/each}
     <path d={chart.path} fill="none" class="stroke-fg" stroke-width="4" opacity="0.15" vector-effect="non-scaling-stroke" />
     <path d={chart.path} fill="none" class="stroke-fg" stroke-width="1" vector-effect="non-scaling-stroke" />
