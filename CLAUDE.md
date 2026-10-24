@@ -1,6 +1,7 @@
 # sigil
 
 - talk minimal. straight to the point. no overexplaining. same for docs and copy.
+- docs: nothing an advanced developer already knows. no taglines, no stack names, no obvious commands or examples.
 - commit as `0x0nb <0x@0nb.dev>`, signed (repo config). never add co-author or ai trailers.
 - push only via `git@github-0x0nb:0nb/sigil.git`.
 - look: black, `#e6e6e6`, system mono, lowercase. no radius, shadows, color.
