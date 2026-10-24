@@ -12,12 +12,16 @@
   ],
   "exports": {
     ".": {
+      "types": "./src/lib/index.d.ts",
       "svelte": "./src/lib/index.js",
       "default": "./src/lib/index.js"
     },
     "./theme.css": "./src/lib/theme.css",
     "./tokens.css": "./src/lib/tokens.css",
-    "./horizon": "./src/lib/horizon/horizon.js"
+    "./horizon": {
+      "types": "./src/lib/horizon/horizon.d.ts",
+      "default": "./src/lib/horizon/horizon.js"
+    }
   },
   "peerDependencies": {
     "svelte": "^5",

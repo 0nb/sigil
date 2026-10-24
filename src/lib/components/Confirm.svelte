@@ -14,6 +14,7 @@
 
   /** @param {KeyboardEvent} e */
   function onkeydown(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     const [yes, no] = buttons();
     if (e.key === 'y') {
       e.preventDefault();

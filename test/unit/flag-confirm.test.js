@@ -42,3 +42,19 @@ test('Confirm focuses n and answers by key', async () => {
   await user.keyboard('{Escape}');
   expect(onno).toHaveBeenCalledOnce();
 });
+
+test('text flag with a long value stays narrow', () => {
+  render(Flag, { props: { name: 'slug', flag: 'slug', value: 'x'.repeat(60) } });
+  const input = screen.getByLabelText(/--slug/);
+  expect(Number(input.getAttribute('size'))).toBeLessThanOrEqual(24);
+  expect(input).toHaveClass('min-w-0');
+});
+
+test('Confirm ignores keys pressed with modifiers', async () => {
+  const onyes = vi.fn();
+  render(Confirm, { props: { question: 'delete /x7kq2mp?', onyes } });
+  await user.keyboard('{Control>}y{/Control}');
+  await user.keyboard('{Meta>}y{/Meta}');
+  await user.keyboard('{Alt>}y{/Alt}');
+  expect(onyes).not.toHaveBeenCalled();
+});

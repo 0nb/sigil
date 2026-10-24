@@ -56,3 +56,21 @@ test('Empty shows title and hint', () => {
   expect(screen.getByText('no links yet')).toBeInTheDocument();
   expect(screen.getByText('paste a url above and press enter.')).toHaveClass('text-dim');
 });
+
+test('Status shows the same message again through show()', async () => {
+  vi.useFakeTimers();
+  const { component } = render(Status, { props: { timeout: 1000 } });
+  component.show('copied', 'ok');
+  await vi.advanceTimersByTimeAsync(0);
+  expect(screen.getByRole('status')).toHaveTextContent('copied');
+  await vi.advanceTimersByTimeAsync(1000);
+  expect(screen.getByRole('status')).not.toHaveTextContent('copied');
+  component.show('copied', 'ok');
+  await vi.advanceTimersByTimeAsync(0);
+  expect(screen.getByRole('status')).toHaveTextContent('copied');
+});
+
+test('Line wraps long unbroken text', () => {
+  render(Line, { props: { kind: 'err', children: snip(`<span>${'a'.repeat(2000)}</span>`) } });
+  expect(screen.getByRole('alert')).toHaveClass('[overflow-wrap:anywhere]');
+});

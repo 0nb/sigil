@@ -43,6 +43,8 @@ test('css and js stay within budget', async () => {
   console.log(`budget: css ${css} B gz, js +${js} B gz over the hand-written page (+${gz(typ.js) - gz(empty.js)} B over an empty app)`);
   expect(css).toBeLessThanOrEqual(8 * 1024);
   expect(js).toBeLessThanOrEqual(10 * 1024);
+  // ratchet: vs an empty app it is ~13.7 KB today; this must not grow unnoticed
+  expect(gz(typ.js) - gz(empty.js)).toBeLessThanOrEqual(14 * 1024);
 }, 60_000);
 
 test('horizon is not in a normal page bundle', async () => {

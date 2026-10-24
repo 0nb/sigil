@@ -6,6 +6,6 @@
   );
 </script>
 
-<p {id} {role} class="text-small text-fg">
+<p {id} {role} class="text-small text-fg [overflow-wrap:anywhere]">
   {#if kind !== 'plain'}<span class="text-dim whitespace-pre">{kind}{'  '}</span>{/if}{@render children?.()}
 </p>

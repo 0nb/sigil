@@ -45,7 +45,8 @@
   const noRows = [];
   const pts = [3, 9, 4, 12, 30, 22, 41].map((v, i) => ({ t: Date.UTC(2026, 9, 18 + i), v }));
 
-  let status = $state('');
+  /** @type {{ show: (t: string, k?: 'err' | 'ok' | 'plain') => void } | undefined} */
+  let status = $state();
   let page = $state(1);
   let answered = $state('');
   let horizon = $state(false);
@@ -103,13 +104,13 @@
       </div>
       <div class="flex flex-col gap-2">
         <Line kind="err">not a valid url.</Line><Line kind="ok">link folded.</Line><Line>plain line.</Line>
-        <div class="flex items-baseline gap-6"><Button type="button" onclick={() => (status = 'copied')}>notify</Button><Status message={status} kind="ok" timeout={2000} /></div>
+        <div class="flex items-baseline gap-6"><Button type="button" onclick={() => status?.show('copied', 'ok')}>notify</Button><Status bind:this={status} timeout={2000} /></div>
         <Spinner />
       </div>
       <div class="flex items-baseline gap-4">
         {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete /x7kq2mp?" onyes={() => (answered = 'y')} onno={() => (answered = 'n')} />{/if}
       </div>
-      <Ls caption="links" {columns} {rows} key={(r) => r.id} onrowclick={() => (status = 'row opened')} />
+      <Ls caption="links" {columns} {rows} key={(r) => r.id} onrowclick={() => status?.show('row opened')} />
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>

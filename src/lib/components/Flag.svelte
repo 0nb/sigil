@@ -20,7 +20,7 @@
   }
 </script>
 
-<label class="inline-flex cursor-pointer items-baseline gap-2 text-small">
+<label class="inline-flex max-w-full min-w-0 cursor-pointer items-baseline gap-2 text-small">
   <span class="text-dim">--{flag}</span>
   {#if kind === 'toggle'}
     <input
@@ -60,8 +60,8 @@
       {name}
       bind:value
       placeholder={empty}
-      size={Math.max(String(value ?? '').length, empty.length, 4)}
-      class={control}
+      size={Math.min(Math.max(String(value ?? '').length, empty.length, 4), 24)}
+      class="{control} max-w-full min-w-0"
     />
   {/if}
 </label>

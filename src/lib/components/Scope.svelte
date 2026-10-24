@@ -11,52 +11,56 @@
     formatT = (t) => new Date(t).toISOString().slice(5, 10),
   } = $props();
 
-  const W = 600;
-  const pad = { l: 44, r: 8, t: 8, b: 22 };
-
+  // lines live in a stretched 1000x100 svg; text is html so it keeps its size at any width
   const chart = $derived.by(() => {
     const vs = points.map((p) => p.v);
-    const min = Math.min(...vs);
+    const n = points.length;
     const max = Math.max(...vs);
     const ys = ticks(0, Math.max(max, 0), 3);
     const top = ys[ys.length - 1];
-    const x = linear([points[0]?.t ?? 0, points[points.length - 1]?.t ?? 0], [pad.l, W - pad.r]);
-    const y = linear([0, top], [height - pad.b, pad.t]);
-    const n = points.length;
-    const xIdx = [...new Set([0, 1, 2, 3].map((i) => Math.round((i * (n - 1)) / 3)))];
+    const x = linear([points[0]?.t ?? 0, points[n - 1]?.t ?? 0], [0, 1000]);
+    const y = linear([0, top], [100, 0]);
     const xy = points.map((p) => ({ x: x(p.t), y: y(p.v) }));
+    const idx = [...new Set([0, 1, 2, 3].map((i) => Math.round((i * (n - 1)) / 3)))];
     return {
       path: pathFrom(xy),
       end: xy[n - 1],
       yLines: ys.map((v) => ({ v, y: y(v) })),
-      xLabels: xIdx.map((i) => ({ t: points[i].t, x: xy[i].x })),
-      desc: `min ${format(min)}, max ${format(max)}, last ${format(vs[n - 1])}`,
+      xLabels: idx.map((i, j) => ({
+        t: points[i].t,
+        left: xy[i].x / 10,
+        align: j === 0 ? 'start' : j === idx.length - 1 ? 'end' : 'middle',
+      })),
+      desc: `min ${format(Math.min(...vs))}, max ${format(max)}, last ${format(vs[n - 1])}`,
     };
   });
+
+  /** @type {Record<string, string>} */
+  const shift = { start: '', middle: '-translate-x-1/2', end: '-translate-x-full' };
 </script>
 
 {#if points.length === 0}
   <Empty title="no data yet" />
 {:else}
-  <svg role="img" aria-label={label} viewBox="0 0 {W} {height}" width="100%" class="block text-tag">
-    <desc>{chart.desc}</desc>
-    {#each chart.yLines as line (line.v)}
-      <line x1={pad.l} x2={W - pad.r} y1={line.y} y2={line.y} class="stroke-rule" vector-effect="non-scaling-stroke" />
-      <text x={pad.l - 8} y={line.y} text-anchor="end" dominant-baseline="middle" class="fill-dim" font-size="10"
-        >{format(line.v)}</text
-      >
-    {/each}
-    {#each chart.xLabels as l, i (l.t)}
-      <text
-        x={l.x}
-        y={height - 4}
-        text-anchor={i === 0 ? 'start' : i === chart.xLabels.length - 1 ? 'end' : 'middle'}
-        class="fill-dim"
-        font-size="10">{formatT(l.t)}</text
-      >
-    {/each}
-    <path d={chart.path} fill="none" class="stroke-fg" stroke-width="4" opacity="0.15" vector-effect="non-scaling-stroke" />
-    <path d={chart.path} fill="none" class="stroke-fg" stroke-width="1" vector-effect="non-scaling-stroke" />
-    <circle cx={chart.end.x} cy={chart.end.y} r="2.5" class="fill-fg" />
-  </svg>
+  <figure class="relative text-tag text-dim tabular-nums" style="height: {height}px">
+    <figcaption class="sr-only">{label}: {chart.desc}</figcaption>
+    <div aria-hidden="true" class="absolute top-2 right-2 bottom-6 left-11">
+      <svg viewBox="0 0 1000 100" preserveAspectRatio="none" class="absolute inset-0 h-full w-full overflow-visible">
+        {#each chart.yLines as line (line.v)}
+          <path d="M0 {line.y}H1000" class="stroke-rule" stroke-width="1" vector-effect="non-scaling-stroke" />
+        {/each}
+        <path d={chart.path} fill="none" class="stroke-fg" stroke-width="4" opacity="0.15" vector-effect="non-scaling-stroke" />
+        <path d={chart.path} fill="none" class="stroke-fg" stroke-width="1" vector-effect="non-scaling-stroke" />
+        <path d="M{chart.end.x} {chart.end.y}h0" class="stroke-fg" stroke-width="5" stroke-linecap="square" vector-effect="non-scaling-stroke" />
+      </svg>
+      {#each chart.yLines as line (line.v)}
+        <span class="absolute right-[calc(100%+8px)] -translate-y-1/2 text-tag whitespace-nowrap" style="top: {line.y}%">{format(line.v)}</span>
+      {/each}
+      {#each chart.xLabels as l (l.t)}
+        <span data-align={l.align} class="absolute top-[calc(100%+6px)] text-tag whitespace-nowrap {shift[l.align]}" style="left: {l.left}%"
+          >{formatT(l.t)}</span
+        >
+      {/each}
+    </div>
+  </figure>
 {/if}

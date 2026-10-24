@@ -27,8 +27,14 @@
 
   const valueOf = (row: T, col: Column) => (row as Record<string, unknown>)[col.key];
 
+  // clicks on controls inside a row belong to the control, not the row
+  function open(e: MouseEvent, row: T) {
+    if ((e.target as Element).closest('a, button, input, select, textarea, label')) return;
+    onrowclick?.(row);
+  }
+
   function onkeydown(e: KeyboardEvent, row: T) {
-    if (e.key !== 'Enter' || !onrowclick) return;
+    if (e.key !== 'Enter' || !onrowclick || e.target !== e.currentTarget) return;
     e.preventDefault();
     onrowclick(row);
   }
@@ -53,9 +59,9 @@
     {#each rows as row (key(row))}
       <tr
         tabindex={onrowclick ? 0 : undefined}
-        onclick={onrowclick ? () => onrowclick(row) : undefined}
+        onclick={onrowclick ? (e) => open(e, row) : undefined}
         onkeydown={(e) => onkeydown(e, row)}
-        class="group outline-none max-sm:block max-sm:py-2 {onrowclick ? 'cursor-pointer' : ''}"
+        class="group outline-hidden max-sm:block max-sm:py-2 max-sm:focus-visible:underline {onrowclick ? 'cursor-pointer' : ''}"
       >
         <td
           aria-hidden="true"

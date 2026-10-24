@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Readout from '../../src/lib/components/Readout.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
+import { snip } from '../helpers.js';
 
 const user = userEvent.setup();
 
@@ -55,4 +56,23 @@ test('Pager clamps and never links past the ends', () => {
   expect(screen.getByRole('navigation', { name: 'pages' })).toHaveTextContent('12/12');
   const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'));
   expect(hrefs).toEqual(['?p=11']);
+});
+
+test('row actions do not open the row', async () => {
+  const onrowclick = vi.fn();
+  const act = { key: 'act', label: 'actions', cell: snip('<button type="button">delete</button>') };
+  render(Ls, { props: { caption: 'l', columns: [columns[0], act], rows, key: (r) => r.id, onrowclick } });
+  const btn = screen.getAllByRole('button', { name: 'delete' })[0];
+  const spy = vi.fn();
+  btn.addEventListener('click', spy);
+  btn.focus();
+  await user.keyboard('{Enter}');
+  expect(spy).toHaveBeenCalledTimes(1);
+  await user.click(btn);
+  expect(onrowclick).not.toHaveBeenCalled();
+});
+
+test('focused rows show focus in the stacked phone layout', () => {
+  render(Ls, { props: { caption: 'l', columns, rows, key: (r) => r.id, onrowclick: () => {} } });
+  expect(screen.getAllByRole('row')[1].className).toMatch(/max-sm:focus-visible:/);
 });
