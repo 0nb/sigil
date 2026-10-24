@@ -11,3 +11,5 @@ export { default as Confirm } from './components/Confirm.svelte';
 export { default as Ls } from './components/Ls.svelte';
 export { default as Readout } from './components/Readout.svelte';
 export { default as Pager } from './components/Pager.svelte';
+export { default as Scope } from './components/Scope.svelte';
+export { default as Spark } from './components/Spark.svelte';
