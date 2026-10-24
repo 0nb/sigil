@@ -13,3 +13,5 @@ export { default as Readout } from './components/Readout.svelte';
 export { default as Pager } from './components/Pager.svelte';
 export { default as Scope } from './components/Scope.svelte';
 export { default as Spark } from './components/Spark.svelte';
+export { default as Shell } from './components/Shell.svelte';
+export { default as Code } from './components/Code.svelte';
