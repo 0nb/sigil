@@ -15,8 +15,7 @@ test('Ls escapes untrusted text and renders without scripts', () => {
   expect(body).not.toMatch(/<script/);
 });
 
-test('Pager with href renders real links', () => {
-  expect(render(Pager, { props: { page: 2, pages: 3, href: (p) => `?p=${p}` } }).body).toMatch(
-    /href="\?p=1"[\s\S]*href="\?p=3"/,
-  );
+test('Pager renders disabled ends on the server', () => {
+  const body = render(Pager, { props: { page: 1, pages: 3 } }).body;
+  expect(body.match(/<button[^>]*disabled/g)).toHaveLength(1);
 });

@@ -28,15 +28,6 @@ test('Ls truncates long values and keeps them in title', () => {
   expect(screen.getByTitle(rows[1].dest)).toHaveClass('truncate');
 });
 
-test('Ls rows open with enter', async () => {
-  const onrowclick = vi.fn();
-  render(Ls, { props: { caption: 'l', columns, rows, key: (r) => r.id, onrowclick } });
-  const row = screen.getAllByRole('row')[1];
-  row.focus();
-  await user.keyboard('{Enter}');
-  expect(onrowclick).toHaveBeenCalledWith(rows[0]);
-});
-
 test('Readout lists key value pairs', () => {
   render(Readout, { props: { items: [{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d' }] } });
   expect(screen.getByText('clicks').tagName).toBe('DT');
@@ -51,28 +42,17 @@ test.each([
   expect(container.querySelector('nav')).toBeNull();
 });
 
-test('Pager clamps and never links past the ends', () => {
-  render(Pager, { props: { page: 99, pages: 12, href: (p) => `?p=${p}` } });
+test('Pager clamps and never pages past the ends', async () => {
+  const onpage = vi.fn();
+  render(Pager, { props: { page: 99, pages: 12, onpage } });
   expect(screen.getByRole('navigation', { name: 'pages' })).toHaveTextContent('12/12');
-  const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'));
-  expect(hrefs).toEqual(['?p=11']);
+  expect(screen.getByRole('button', { name: 'next page' })).toBeDisabled();
+  await user.click(screen.getByRole('button', { name: 'previous page' }));
+  expect(onpage).toHaveBeenCalledWith(11);
 });
-
-test('row actions do not open the row', async () => {
-  const onrowclick = vi.fn();
-  const act = { key: 'act', label: 'actions', cell: snip('<button type="button">delete</button>') };
-  render(Ls, { props: { caption: 'l', columns: [columns[0], act], rows, key: (r) => r.id, onrowclick } });
-  const btn = screen.getAllByRole('button', { name: 'delete' })[0];
-  const spy = vi.fn();
-  btn.addEventListener('click', spy);
-  btn.focus();
-  await user.keyboard('{Enter}');
-  expect(spy).toHaveBeenCalledTimes(1);
-  await user.click(btn);
-  expect(onrowclick).not.toHaveBeenCalled();
-});
-
-test('focused rows show focus in the stacked phone layout', () => {
-  render(Ls, { props: { caption: 'l', columns, rows, key: (r) => r.id, onrowclick: () => {} } });
-  expect(screen.getAllByRole('row')[1].className).toMatch(/max-sm:focus-visible:/);
+test('rows are not focus traps; links in cells are the way in', () => {
+  const link = { key: 'short', label: 'short', cell: snip('<a href="/x7kq2mp">/x7kq2mp</a>') };
+  render(Ls, { props: { caption: 'l', columns: [link], rows, key: (r) => r.id } });
+  expect(screen.getAllByRole('row')[1]).not.toHaveAttribute('tabindex');
+  expect(screen.getAllByRole('link', { name: '/x7kq2mp' })).toHaveLength(2);
 });

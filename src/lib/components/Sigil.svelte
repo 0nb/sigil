@@ -10,7 +10,7 @@
   fill="none"
   stroke="currentColor"
   stroke-width={weight}
-  class={klass}
+  class="{klass}"
   aria-hidden={title ? undefined : 'true'}
   role={title ? 'img' : undefined}
   aria-label={title}

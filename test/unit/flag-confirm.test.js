@@ -15,21 +15,14 @@ test('text flag edits in place and is named', async () => {
   expect(input).toHaveAttribute('name', 'slug');
 });
 
-test('toggle flag toggles with enter and with space', async () => {
-  render(Flag, { props: { name: 'private', flag: 'private', kind: 'toggle' } });
-  const box = screen.getByLabelText(/--private/);
-  box.focus();
-  await user.keyboard('{Enter}');
-  expect(box).toBeChecked();
-  await user.keyboard(' ');
-  expect(box).not.toBeChecked();
+test('password flag hides what is typed', () => {
+  render(Flag, { props: { name: 'password', flag: 'password', kind: 'password' } });
+  expect(screen.getByLabelText(/--password/)).toHaveAttribute('type', 'password');
 });
 
-test('choice flag is a select with the given options', () => {
-  render(Flag, {
-    props: { name: 'domain', flag: 'domain', kind: 'choice', options: ['fld.0nb.dev', '0nb.dev'], value: 'fld.0nb.dev' },
-  });
-  expect(screen.getByLabelText(/--domain/)).toHaveDisplayValue('fld.0nb.dev');
+test('date flag submits its value', () => {
+  render(Flag, { props: { name: 'expires', flag: 'expires', kind: 'date', value: '2026-11-01' } });
+  expect(screen.getByLabelText(/--expires/)).toHaveValue('2026-11-01');
 });
 
 test('Confirm focuses n and answers by key', async () => {

@@ -25,11 +25,11 @@
     </div>
     <div class="flex flex-wrap gap-6">
       <Flag name="slug" flag="slug" empty="auto" />
-      <Flag name="password" flag="password" />
+      <Flag name="password" flag="password" kind="password" />
       <Flag name="expires" flag="expires" kind="date" empty="never" />
     </div>
     <Line kind="ok">ready</Line>
   </form>
-  <Ls caption="your links" {columns} {rows} key={(r) => r.id} onrowclick={() => {}} />
+  <Ls caption="your links" {columns} {rows} key={(r) => r.id} />
   <Pager {page} pages={4} onpage={(p) => (page = p)} />
 </Shell>

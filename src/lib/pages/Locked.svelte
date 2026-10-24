@@ -1,5 +1,4 @@
 <script>
-  import Shell from '../components/Shell.svelte';
   import Sigil from '../components/Sigil.svelte';
   import Prompt from '../components/Prompt.svelte';
   import Button from '../components/Button.svelte';
@@ -8,7 +7,7 @@
   let { action, error, tags } = $props();
 </script>
 
-<Shell bar={false} grid {tags}>
+<div class='sg-shell min-h-dvh' data-left={tags?.left} data-right={tags?.right}><div class='sg-gutter' data-grid>
   <section class="flex min-h-dvh flex-col items-center justify-center gap-6">
     <Sigil size={64} class="text-dim" />
     <p class="text-body">this link is locked.</p>
@@ -17,4 +16,4 @@
       <Button class="mt-2.5">open</Button>
     </form>
   </section>
-</Shell>
+</div></div>

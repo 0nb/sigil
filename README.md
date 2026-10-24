@@ -1,7 +1,7 @@
 # sigil
 
 ```json
-"@0nb/sigil": "github:0nb/sigil#v0.1.0"
+"@0nb/sigil": "github:0nb/sigil#v0.2.0"
 ```
 
 ```css

@@ -6,7 +6,7 @@
 </script>
 
 <label for={id} class="inline-flex cursor-pointer items-center gap-2 text-body">
-  <input {id} type="checkbox" {name} {value} {disabled} bind:checked class="peer sr-only" />
+  <input {id} type="checkbox" {name} {value} {disabled} {checked} onchange={(e) => (checked = e.currentTarget.checked)} class="peer sr-only" />
   <span
     aria-hidden="true"
     class="whitespace-pre text-dim peer-checked:text-fg peer-focus-visible:text-fg before:content-['[_]'] peer-checked:before:content-['[x]']"

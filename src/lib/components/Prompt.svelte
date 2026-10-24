@@ -6,25 +6,24 @@
     name,
     label,
     value = $bindable(''),
-    type = 'text',
+    type,
     placeholder,
     error,
-    disabled = false,
-    required = false,
-    autofocus = false,
+    disabled,
+    required,
+    autofocus,
   } = $props();
 
-  const id = $props.id();
+  // ids are fixed at mount; a renamed field keeps its first id
+  // svelte-ignore state_referenced_locally
+  const id = `sg-${name}`;
 </script>
 
 <div class="w-full">
   <label for={id} class="sr-only">{label}</label>
   <div
-    class="flex items-center gap-3 border-b py-2 focus-within:border-fg {error
-      ? 'border-fg'
-      : 'border-rule'}"
+    class="sg-prompt {error ? 'border-fg' : ''}"
   >
-    <span aria-hidden="true" class="text-dim">&gt;</span>
     <!-- svelte-ignore a11y_autofocus -->
     <input
       {id}
@@ -34,10 +33,11 @@
       {disabled}
       {required}
       {autofocus}
-      bind:value
+      {value}
+      oninput={(e) => (value = e.currentTarget.value)}
       aria-invalid={error ? 'true' : undefined}
       aria-describedby={error ? `${id}-err` : undefined}
-      class="min-w-0 w-full flex-1 bg-transparent text-input text-fg outline-none placeholder:text-dim disabled:text-dim [caret-color:var(--sg-fg)] [caret-shape:block]"
+      class="sg-prompt-in min-w-0 w-full"
     />
   </div>
   {#if error}<Line kind="err" id="{id}-err">{error}</Line>{/if}

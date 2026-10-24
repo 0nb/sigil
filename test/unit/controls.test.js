@@ -34,12 +34,13 @@ test('Button is a submit button with brackets that are not read out', () => {
   render(Button, { props: { children: snip('<span>fold</span>') } });
   const b = screen.getByRole('button', { name: 'fold' });
   expect(b).toHaveAttribute('type', 'submit');
-  expect(b.textContent.replace(/\s+/g, ' ').trim()).toBe('[ fold ]');
+  expect(b.textContent.trim()).toBe('fold');
+  expect(b).toHaveClass('sg-btn');
 });
 
-test('Button with href is a link', () => {
-  render(Button, { props: { href: '/', children: snip('<span>home</span>') } });
-  expect(screen.getByRole('link', { name: 'home' })).toHaveAttribute('href', '/');
+test('Button accepts an extra class', () => {
+  render(Button, { props: { class: 'mt-2', children: snip('<span>open</span>') } });
+  expect(screen.getByRole('button', { name: 'open' })).toHaveClass('sg-btn', 'mt-2');
 });
 
 test('Check toggles with space and submits its value', async () => {

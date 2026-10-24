@@ -112,9 +112,9 @@ consequences for the builder:
 
 | group | components |
 |---|---|
-| input | `Prompt` (text input; idle, focus, error, disabled) · `Button` (bracketed) · `Flag` (key + value, inline edit; text, toggle, choice, date) · `Check` (`[x]` / `[ ]`) · `Confirm` (inline y/n, `y`/`n` keys) |
+| input | `Prompt` (text input; idle, focus, error, disabled) · `Button` (bracketed; links get the same look with the `sg-btn` class) · `Flag` (key + value, inline edit; text, password, date — toggle and choice dropped 2026-10-24, no project needs them) · `Check` (`[x]` / `[ ]`) · `Confirm` (inline y/n, `y`/`n` keys) |
 | feedback | `Line` (err / ok / plain) · `Status` (single status line) · `Spinner` · `Empty` (empty state with one hint) |
-| data | `Ls` (table: column alignment, numeric columns, hover/focus marker, row actions, stacks on phones) · `Readout` (key–value list) · `Pager` (`<- 1/12 ->`) · `Scope` (svg line chart, oscilloscope look, mono ticks) · `Spark` (inline trend line) |
+| data | `Ls` (table: column alignment, numeric columns, hover/focus marker, links/actions in cells — rows themselves are not clickable — stacks on phones) · `Readout` (key–value list) · `Pager` (`<- 1/12 ->`, buttons with `onpage`) · `Scope` (svg line chart, oscilloscope look, mono ticks) · `Spark` (inline trend line) |
 | layout | `Shell` (page frame: top bar with sigil + name + nav + account, optional grid background, corner tags) · `Code` (code block with copy) |
 | brand | `Sigil` (svg mark) · `Horizon` (shader) · page templates `NotFound`, `Expired`, `Locked` (password prompt) |
 
@@ -130,7 +130,7 @@ plus a **brand asset script** (my call): a dev-only command run from a sigil che
 ## 8. performance budget
 
 - theme + base CSS: ≤ 8 KB gzipped in a consumer's build.
-- each component: small enough that a typical page using 6–8 of them adds ≤ 10 KB gzipped of compiled JS.
+- each component: small enough that a typical page using 6–8 of them adds ≤ 10 KB gzipped of compiled JS over an empty svelte app (svelte runtime included).
 - zero runtime dependencies; `svelte` and `tailwindcss` are peer dependencies.
 - no web fonts, no icon fonts, no images except inline svg.
 - `Horizon` is never in the main bundle; it loads only where used.

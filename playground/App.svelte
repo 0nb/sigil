@@ -64,7 +64,7 @@
   name="sigil"
   nav={[{ href: '#tokens', label: 'tokens', current: true }, { href: '#components', label: 'components' }, { href: '#pages', label: 'pages' }, { href: '#assets', label: 'assets' }]}
   grid
-  tags={{ left: '0nb', right: 'sigil v0.1.0' }}
+  tags={{ left: '0nb', right: 'sigil v0.2.0' }}
 >
   <div class="flex max-w-4xl flex-col gap-16 pb-24">
     <section id="tokens">
@@ -93,13 +93,12 @@
         <Prompt name="off" label="disabled" value="read only" disabled />
       </div>
       <div class="flex flex-wrap items-baseline gap-6">
-        <Button type="button">fold</Button><Button type="button" disabled>fold</Button><Button href="#components">link</Button>
+        <Button type="button">fold</Button><Button type="button" disabled>fold</Button><a href="#components" class="group sg-btn"><span class="sg-btn-label">link</span></a>
         <Check name="private" label="private" />
       </div>
       <div class="flex flex-wrap gap-6">
         <Flag name="slug" flag="slug" empty="auto" />
-        <Flag name="lock" flag="password" kind="toggle" />
-        <Flag name="domain" flag="domain" kind="choice" options={['fld.0nb.dev', '0nb.dev']} value="fld.0nb.dev" />
+        <Flag name="password" flag="password" kind="password" />
         <Flag name="expires" flag="expires" kind="date" empty="never" />
       </div>
       <div class="flex flex-col gap-2">
@@ -110,12 +109,12 @@
       <div class="flex items-baseline gap-4">
         {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete /x7kq2mp?" onyes={() => (answered = 'y')} onno={() => (answered = 'n')} />{/if}
       </div>
-      <Ls caption="links" {columns} {rows} key={(r) => r.id} onrowclick={() => status?.show('row opened')} />
+      <Ls caption="links" {columns} {rows} key={(r) => r.id} />
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
-      <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={1} pages={3} href={(p) => `#p${p}`} /></div>
+      <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} /></div>
       <Scope points={pts} label="clicks, last 7 days" />
       <div class="grid gap-6 sm:grid-cols-2"><Scope points={[]} label="clicks" height={100} /><Scope points={[pts[0]]} label="clicks" height={100} /></div>
       <p class="text-small">trend <Spark values={[3, 9, 4, 12, 30, 22, 41]} /></p>

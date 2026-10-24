@@ -1,67 +1,19 @@
 <script>
-  /** @type {{ name: string, flag: string, kind?: 'text' | 'toggle' | 'choice' | 'date', value?: string | boolean, options?: string[], empty?: string }} */
-  let {
-    name,
-    flag,
-    kind = 'text',
-    value = $bindable(kind === 'toggle' ? false : ''),
-    options = [],
-    empty = 'none',
-  } = $props();
-
-  const control =
-    'bg-transparent text-fg outline-none border-b border-transparent focus:border-fg placeholder:text-dim';
-
-  /** @param {KeyboardEvent} e */
-  function enterToggles(e) {
-    if (e.key !== 'Enter') return;
-    e.preventDefault();
-    value = !value;
-  }
+  /** @type {{ name: string, flag: string, kind?: 'text' | 'password' | 'date', value?: string, empty?: string }} */
+  let { name, flag, kind = 'text', value = $bindable(''), empty = 'none' } = $props();
 </script>
 
-<label class="inline-flex max-w-full min-w-0 cursor-pointer items-baseline gap-2 text-small">
+<label class="sg-flag">
   <span class="text-dim">--{flag}</span>
-  {#if kind === 'toggle'}
+  <span class="sg-flag-date" data-empty={kind === 'date' && !value ? empty : undefined}>
     <input
-      type="checkbox"
+      type={kind}
       {name}
-      value="on"
-      checked={value === true}
-      onchange={(e) => (value = e.currentTarget.checked)}
-      onkeydown={enterToggles}
-      class="peer sr-only"
-    />
-    <span
-      aria-hidden="true"
-      class="border-b border-transparent text-dim peer-checked:text-fg peer-focus-visible:border-fg before:content-[attr(data-off)] peer-checked:before:content-['on']"
-      data-off={empty}
-    ></span>
-  {:else if kind === 'choice'}
-    <select {name} bind:value class="{control} cursor-pointer appearance-none">
-      {#each options as o (o)}<option value={o} class="bg-ground">{o}</option>{/each}
-    </select>
-  {:else if kind === 'date'}
-    <span class="relative inline-block">
-      <input
-        type="date"
-        {name}
-        bind:value
-        class="{control} peer {value ? '' : 'text-transparent focus:text-fg'}"
-      />
-      {#if !value}<span
-          aria-hidden="true"
-          class="pointer-events-none absolute top-0 left-0 text-dim peer-focus:hidden">{empty}</span
-        >{/if}
-    </span>
-  {:else}
-    <input
-      type="text"
-      {name}
-      bind:value
+      {value}
+      oninput={(e) => (value = e.currentTarget.value)}
       placeholder={empty}
-      size={Math.min(Math.max(String(value ?? '').length, empty.length, 4), 24)}
-      class="{control} max-w-full min-w-0"
+      size={Math.min(Math.max(value.length, empty.length, 4), 24)}
+      class="sg-flag-in max-w-full min-w-0 {kind === 'date' && !value ? 'text-transparent focus:text-fg' : ''}"
     />
-  {/if}
+  </span>
 </label>

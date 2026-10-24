@@ -18,9 +18,10 @@ test('Shell marks the current page and hides decorative tags', () => {
   });
   expect(screen.getByRole('link', { name: 'links' })).toHaveAttribute('aria-current', 'page');
   expect(screen.getByRole('navigation', { name: 'main' })).toBeInTheDocument();
-  const tags = container.querySelectorAll('.corner-tag');
-  expect(tags).toHaveLength(2);
-  tags.forEach((t) => expect(t).toHaveAttribute('aria-hidden', 'true'));
+  const shell = /** @type {HTMLElement} */ (container.querySelector('.sg-shell'));
+  expect(shell.dataset.left).toBe('fold');
+  expect(shell.dataset.right).toBe('fld.0nb.dev');
+  expect(screen.queryByText('fld.0nb.dev')).toBeNull();
 });
 
 test('Code copies, and reports a refused clipboard', async () => {

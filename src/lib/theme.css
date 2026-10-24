@@ -48,7 +48,7 @@
   }
 }
 
-@utility bg-grid {
+@utility sg-grid {
   background-image:
     linear-gradient(var(--sg-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--sg-grid) 1px, transparent 1px);
@@ -63,4 +63,136 @@
   font-size: var(--sg-tag);
   letter-spacing: var(--sg-track);
   color: var(--sg-ghost);
+}
+
+/* component utilities: long class lists live here so compiled components stay small */
+@utility sg-gutter {
+  &[data-grid]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    @apply sg-grid;
+  }
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  @variant sm {
+    padding-left: max(32px, env(safe-area-inset-left, 0px));
+    padding-right: max(32px, env(safe-area-inset-right, 0px));
+  }
+}
+@utility sg-link {
+  @apply outline-hidden hover:text-fg focus-visible:text-fg focus-visible:underline;
+}
+@utility sg-btn {
+  @apply inline-flex cursor-pointer items-center tracking-btn text-fg outline-hidden disabled:cursor-default disabled:text-dim;
+  &::before,
+  &::after {
+    white-space: pre;
+    color: var(--sg-dim);
+  }
+  &::before {
+    content: '[ ' / '';
+  }
+  &::after {
+    content: ' ]' / '';
+  }
+  &:hover::before,
+  &:hover::after,
+  &:focus-visible::before,
+  &:focus-visible::after {
+    color: var(--sg-fg);
+  }
+}
+@utility sg-btn-label {
+  @apply underline-offset-4 group-hover:underline group-focus-visible:underline group-disabled:no-underline;
+}
+@utility sg-prompt {
+  @apply flex items-center gap-3 border-b border-rule py-2 focus-within:border-fg;
+  &::before {
+    content: '>' / '';
+    color: var(--sg-dim);
+  }
+}
+@utility sg-prompt-in {
+  @apply flex-1 bg-transparent text-input text-fg outline-hidden placeholder:text-dim disabled:text-dim;
+  caret-color: var(--sg-fg);
+  caret-shape: block;
+}
+@utility sg-flag {
+  @apply inline-flex max-w-full min-w-0 cursor-pointer items-baseline gap-2 text-small;
+}
+@utility sg-flag-in {
+  @apply border-b border-transparent bg-transparent text-fg outline-hidden placeholder:text-dim focus:border-fg;
+}
+@utility sg-flag-date {
+  @apply relative inline-block;
+  &[data-empty]::after {
+    content: attr(data-empty) / '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--sg-dim);
+    pointer-events: none;
+  }
+  &[data-empty]:focus-within::after {
+    content: none;
+  }
+}
+@utility sg-th {
+  @apply border-b border-rule pb-1.5 text-tag font-normal tracking-tag text-dim;
+}
+@utility sg-td {
+  @apply sg-td-mark max-w-0 py-1 max-sm:block max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
+}
+@utility sg-td-r {
+  @apply pl-4 text-right tabular-nums max-sm:pl-0 max-sm:text-left;
+}
+@utility sg-bar {
+  @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-6 text-label tracking-tag;
+}
+@utility sg-sigil {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23000' stroke-width='2.4'%3E%3Ccircle cx='20' cy='20' r='11'/%3E%3Cpath d='M20 2V38'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+@utility sg-td-mark {
+  @apply relative sm:first:before:absolute sm:first:before:-left-[2ch] sm:first:before:invisible sm:first:before:text-dim sm:first:before:content-['>'] sm:group-hover:first:before:visible sm:group-focus-within:first:before:visible;
+}
+@utility sg-shell {
+  &::before,
+  &::after {
+    position: fixed;
+    bottom: 2rem;
+    font-size: var(--sg-tag);
+    letter-spacing: var(--sg-track);
+    color: var(--sg-ghost);
+    pointer-events: none;
+  }
+  &::before {
+    content: attr(data-left) / '';
+    left: 2rem;
+  }
+  &::after {
+    content: attr(data-right) / '';
+    right: 2rem;
+  }
+  @variant max-sm {
+    &::before,
+    &::after {
+      bottom: 1.5rem;
+    }
+    &::before {
+      left: 1.25rem;
+    }
+    &::after {
+      right: 1.25rem;
+    }
+  }
+}
+@utility sg-pg {
+  @apply sg-link cursor-pointer text-dim aria-disabled:cursor-default aria-disabled:text-ghost disabled:cursor-default disabled:text-ghost;
 }
