@@ -1,0 +1,66 @@
+@import './tokens.css';
+
+@theme {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+}
+
+@theme inline {
+  --color-ground: var(--sg-ground);
+  --color-fg: var(--sg-fg);
+  --color-dim: var(--sg-dim);
+  --color-ghost: var(--sg-ghost);
+  --color-rule: var(--sg-rule);
+  --color-grid: var(--sg-grid);
+  --font-mono: var(--sg-mono);
+  --text-tag: var(--sg-tag);
+  --text-label: var(--sg-label);
+  --text-small: var(--sg-small);
+  --text-body: var(--sg-body);
+  --text-input: var(--sg-input);
+  --text-display: var(--sg-display);
+  --tracking-tag: var(--sg-track);
+  --tracking-btn: var(--sg-track-btn);
+}
+
+@layer base {
+  html {
+    background: var(--sg-ground);
+    color: var(--sg-fg);
+    font-family: var(--sg-mono);
+    font-size: var(--sg-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--sg-fg);
+    color: var(--sg-ground);
+  }
+  :focus-visible {
+    outline: 1px solid var(--sg-fg);
+    outline-offset: 2px;
+  }
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(var(--sg-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--sg-grid) 1px, transparent 1px);
+  background-size: var(--sg-grid-size) var(--sg-grid-size);
+  background-position: center center;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, #000 0%, transparent 70%);
+}
+
+@utility corner-tag {
+  position: fixed;
+  font-size: var(--sg-tag);
+  letter-spacing: var(--sg-track);
+  color: var(--sg-ghost);
+}
