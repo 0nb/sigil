@@ -1,0 +1,47 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "609d56e289a266ae1a2799b531002a942a56e16e",
+  "release-type": "node",
+  "include-component-in-tag": false,
+  "bump-minor-pre-major": true,
+  "pull-request-title-pattern": "chore: release v${version}",
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "features"
+    },
+    {
+      "type": "fix",
+      "section": "fixes"
+    },
+    {
+      "type": "perf",
+      "section": "performance"
+    },
+    {
+      "type": "docs",
+      "section": "docs",
+      "hidden": true
+    },
+    {
+      "type": "test",
+      "section": "tests",
+      "hidden": true
+    },
+    {
+      "type": "chore",
+      "section": "chores",
+      "hidden": true
+    }
+  ],
+  "packages": {
+    ".": {
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "README.md"
+        }
+      ]
+    }
+  }
+}

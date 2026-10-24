@@ -4,6 +4,7 @@
     Ls, Readout, Pager, Scope, Spark, Shell, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
+  import pkg from '../package.json';
 
   const tokens = [
     ['ground', '#000000'], ['fg', '#e6e6e6'], ['dim', '#8a8a8a'],
@@ -64,7 +65,7 @@
   name="sigil"
   nav={[{ href: '#tokens', label: 'tokens', current: true }, { href: '#components', label: 'components' }, { href: '#pages', label: 'pages' }, { href: '#assets', label: 'assets' }]}
   grid
-  tags={{ left: '0nb', right: 'sigil v0.2.0' }}
+  tags={{ left: '0nb', right: `sigil v${pkg.version}` }}
 >
   <div class="flex max-w-4xl flex-col gap-16 pb-24">
     <section id="tokens">
