@@ -8,3 +8,6 @@ export { default as Button } from './components/Button.svelte';
 export { default as Check } from './components/Check.svelte';
 export { default as Flag } from './components/Flag.svelte';
 export { default as Confirm } from './components/Confirm.svelte';
+export { default as Ls } from './components/Ls.svelte';
+export { default as Readout } from './components/Readout.svelte';
+export { default as Pager } from './components/Pager.svelte';
