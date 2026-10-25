@@ -51,6 +51,7 @@
   let page = $state(1);
   let answered = $state('');
   let horizon = $state(false);
+  let range = $state('24h');
   const brand = brandSvgs({ left: '0nb', right: 'est. 2023' });
   const frame = 'relative h-[400px] overflow-hidden border-b border-rule [transform:translateZ(0)] [&_.min-h-dvh]:min-h-[400px]';
 </script>
@@ -117,6 +118,9 @@
       </Ls>
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
       <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} label="last page" /></div>
+      <div role="group" aria-label="range" class="flex flex-wrap gap-4">
+        {#each ['24h', '7d', '30d', 'all'] as r (r)}<Button type="button" pressed={range === r} onclick={() => (range = r)}>{r}</Button>{/each}
+      </div>
       <Scope points={pts} label="clicks, last 7 days" />
       <div class="grid gap-6 sm:grid-cols-2"><Scope points={[]} label="clicks" height={100} /><Scope points={[pts[0]]} label="clicks" height={100} /></div>
       <p class="text-small">trend <Spark values={[3, 9, 4, 12, 30, 22, 41]} /></p>

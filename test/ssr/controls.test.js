@@ -10,3 +10,7 @@ test('controls render native form elements on the server', () => {
   expect(check).toContain('type="checkbox"');
   expect(check).toMatch(/\schecked(=""|\s|>)/);
 });
+
+test('pressed renders on the server', () => {
+  expect(render(Button, { props: { pressed: false } }).body).toContain('aria-pressed="false"');
+});

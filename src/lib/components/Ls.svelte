@@ -45,7 +45,7 @@
           {@const v = valueOf(row, col)}
           <td
             data-label={col.label}
-            title={typeof v === 'string' ? v : undefined}
+            title={col.cell ? null : (v as string)}
             class="sg-td truncate {col.align === 'right' ? 'sg-td-r' : 'pr-4'} {col.dim ? 'text-dim' : 'text-fg'}"
           >
             {#if col.cell}{@render col.cell(row)}{:else}{v}{/if}
