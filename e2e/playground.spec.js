@@ -7,10 +7,24 @@ test('every section renders', async ({ page }) => {
     await expect(page.getByRole('heading', { name: h, exact: true })).toBeVisible();
 });
 
+// innerWidth grows with overflowing content on mobile emulation; clientWidth stays the viewport width
+const overflows = (page) =>
+  page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
+
 test('no horizontal scroll', async ({ page }) => {
   await page.goto('/');
-  const [sw, w] = await page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]);
-  expect(sw).toBeLessThanOrEqual(w);
+  expect(await overflows(page)).toBe(false);
+});
+
+test('the overflow check catches a too-wide element', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const d = document.createElement('div');
+    d.style.width = '2000px';
+    d.style.height = '1px';
+    document.body.append(d);
+  });
+  expect(await overflows(page)).toBe(true);
 });
 
 test('prompt takes input and confirm answers by key', async ({ page }) => {

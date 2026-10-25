@@ -4,6 +4,7 @@ const url = 'http://localhost:5173';
 
 export default defineConfig({
   testDir: 'e2e',
+  forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: { baseURL: url },
   webServer: {
