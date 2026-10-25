@@ -1,6 +1,6 @@
 <script>
-  /** @type {{ page: number, pages: number, onpage?: (p: number) => void }} */
-  let { page, pages, onpage } = $props();
+  /** @type {{ page: number, pages: number, onpage?: (p: number) => void, label?: string }} */
+  let { page, pages, onpage, label = 'pages' } = $props();
 
   const at = $derived(Math.min(Math.max(1, Math.round(page) || 1), pages));
 </script>
@@ -12,7 +12,7 @@
 {/snippet}
 
 {#if pages > 1}
-  <nav aria-label="pages" class="flex items-baseline gap-4 text-small tabular-nums">
+  <nav aria-label={label} class="flex items-baseline gap-4 text-small tabular-nums">
     {@render arrow(at - 1, '<-', 'previous page')}
     <span class="text-fg">{at}/{pages}</span>
     {@render arrow(at + 1, '->', 'next page')}

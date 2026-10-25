@@ -34,3 +34,9 @@ test('Code copies, and reports a refused clipboard', async () => {
   await user.click(screen.getByRole('button', { name: 'copy' }));
   expect(await screen.findByRole('alert')).toHaveTextContent(/err\s+copy failed\. select the text and copy it\./);
 });
+
+test('Code scroll area is reachable by keyboard', () => {
+  render(Code, { props: { code: 'x'.repeat(500), label: 'install' } });
+  const pre = document.querySelector('pre');
+  expect(pre).toHaveAttribute('tabindex', '0');
+});
