@@ -4,7 +4,8 @@ import * as lib from '../../src/lib/index.js';
 const app = readFileSync('playground/App.svelte', 'utf8');
 
 test('the reference shows every exported component', () => {
-  for (const name of Object.keys(lib)) expect(app).toMatch(new RegExp(`<${name}[\\s>/]`));
+  // pages are shown in frames: <Frame component={NotFound} …>
+  for (const name of Object.keys(lib)) expect(app).toMatch(new RegExp(`<${name}[\\s>/]|component=\\{${name}\\}`));
 });
 
 test('the readme documents install and the two tailwind lines', () => {

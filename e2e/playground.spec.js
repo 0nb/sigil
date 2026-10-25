@@ -71,3 +71,31 @@ test('range selector shows the pressed choice', async ({ page }) => {
     .evaluate((el) => getComputedStyle(el).textDecorationLine);
   expect(line).toBe('underline');
 });
+
+const pages = [
+  ['not found page', 'nothing here.'],
+  ['expired page', 'this link has expired.'],
+  ['locked page', 'this link is locked.'],
+];
+
+test('each framed page renders its main landmark', async ({ page }) => {
+  await page.goto('/');
+  for (const [title, heading] of pages)
+    await expect(page.frameLocator(`iframe[title="${title}"]`).getByRole('main', { name: heading })).toBeVisible();
+});
+
+test('each page passes axe as a standalone document', async ({ page }) => {
+  await page.goto('/');
+  const docs = [];
+  for (const [title] of pages)
+    docs.push(
+      await page
+        .frameLocator(`iframe[title="${title}"]`)
+        .locator('html')
+        .evaluate((el) => '<!doctype html>' + el.outerHTML),
+    );
+  for (const html of docs) {
+    await page.setContent(html);
+    expect((await new AxeBuilder({ page }).analyze()).violations.map((v) => v.id)).toEqual([]);
+  }
+});
