@@ -56,6 +56,7 @@ test('range selector shows the pressed choice', async ({ page }) => {
   const group = page.getByRole('group', { name: 'range' });
   await group.scrollIntoViewIfNeeded();
   await group.getByRole('button', { name: '7d' }).click();
+  await page.mouse.move(0, 0); // hover also brightens brackets; measure the pressed rule alone
   await expect(group.getByRole('button', { name: '7d' })).toHaveAttribute('aria-pressed', 'true');
   await expect(group.getByRole('button', { name: '24h' })).toHaveAttribute('aria-pressed', 'false');
   const dim = await group.getByRole('button', { name: '24h' }).evaluate((el) => getComputedStyle(el).color);
@@ -64,4 +65,9 @@ test('range selector shows the pressed choice', async ({ page }) => {
     .evaluate((el) => getComputedStyle(el, '::before').color);
   expect(dim).toBe('rgb(138, 138, 138)');
   expect(bright).toBe('rgb(230, 230, 230)');
+  const line = await group
+    .getByRole('button', { name: '7d' })
+    .locator('.sg-btn-label')
+    .evaluate((el) => getComputedStyle(el).textDecorationLine);
+  expect(line).toBe('underline');
 });

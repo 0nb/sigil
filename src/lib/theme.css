@@ -110,7 +110,7 @@
   }
 }
 @utility sg-btn-label {
-  @apply underline-offset-4 group-hover:underline group-focus-visible:underline group-disabled:no-underline;
+  @apply underline-offset-4 group-hover:underline group-focus-visible:underline group-disabled:no-underline group-aria-pressed:underline;
 }
 @utility sg-prompt {
   @apply flex items-center gap-3 border-b border-rule py-2 focus-within:border-fg;
