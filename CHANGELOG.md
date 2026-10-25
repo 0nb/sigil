@@ -1,5 +1,17 @@
 # changelog
 
+## [0.4.0](https://github.com/0nb/sigil/compare/v0.3.0...v0.4.0) (2026-10-25)
+
+
+### features
+
+* locked action is optional; without it the form posts to the current url ([5421385](https://github.com/0nb/sigil/commit/54213856087ef2f3555d631e101c53c9e8f34147))
+
+
+### fixes
+
+* visitor pages put their content in a main landmark named after their heading ([5421385](https://github.com/0nb/sigil/commit/54213856087ef2f3555d631e101c53c9e8f34147))
+
 ## [0.3.0](https://github.com/0nb/sigil/compare/v0.2.0...v0.3.0) (2026-10-25)
 
 
