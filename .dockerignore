@@ -1,6 +1,5 @@
 node_modules
-.git
-.superpowers
+.*
 playwright-report
 test-results
 test/budget/.out
