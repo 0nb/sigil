@@ -36,3 +36,27 @@ test.each([
 ])('%o states its message as the page heading', (Page, props, text) => {
   expect(render(Page, { props }).body).toMatch(new RegExp(`<h1[^>]*>${text.replace('.', '\\.')}</h1>`));
 });
+
+test.each([
+  [NotFound, {}],
+  [Expired, {}],
+  [Locked, {}],
+])('%o puts its content in a main landmark', (Page, props) => {
+  expect(render(Page, { props }).body.match(/<main[\s>]/g)).toHaveLength(1);
+});
+
+test('Locked without an action posts back to the current url', () => {
+  const form = render(Locked, { props: {} }).body.match(/<form[^>]*>/)[0];
+  expect(form).not.toContain('action=');
+});
+
+test.each([
+  [NotFound, {}],
+  [Expired, {}],
+  [Locked, {}],
+])('%o names its main landmark after its heading', (Page, props) => {
+  const body = render(Page, { props }).body;
+  const id = body.match(/<h1[^>]*id="([^"]+)"/)?.[1];
+  expect(id).toBeTruthy();
+  expect(body).toMatch(new RegExp(`<main[^>]*aria-labelledby="${id}"`));
+});

@@ -5,6 +5,7 @@
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
+  import Frame from './Frame.svelte';
 
   const tokens = [
     ['ground', '#000000'], ['fg', '#e6e6e6'], ['dim', '#8a8a8a'],
@@ -53,7 +54,6 @@
   let horizon = $state(false);
   let range = $state('24h');
   const brand = brandSvgs({ left: '0nb', right: 'est. 2023' });
-  const frame = 'relative h-[400px] overflow-hidden border-b border-rule [transform:translateZ(0)] [&_.min-h-dvh]:min-h-[400px]';
 </script>
 
 {#if horizon}<Horizon />{/if}
@@ -130,9 +130,9 @@
 
     <section id="pages" class="flex flex-col gap-6">
       {@render head('pages')}
-      <div class={frame}><NotFound home="#pages" /></div>
-      <div class={frame}><Expired home="#pages" /></div>
-      <div class={frame}><Locked action="#pages" error="wrong password." /></div>
+      <Frame title="not found page" component={NotFound} props={{ home: "#pages" }} />
+      <Frame title="expired page" component={Expired} props={{ home: "#pages" }} />
+      <Frame title="locked page" component={Locked} props={{ error: "wrong password." }} />
     </section>
 
     <section id="assets" class="flex flex-col gap-6">
