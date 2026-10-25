@@ -27,7 +27,9 @@
 </script>
 
 <figure aria-label={label} class="text-small">
-  <pre class="overflow-x-auto py-2 text-fg"><code>{code}</code></pre>
+  <!-- scrolling content must be keyboard-reachable (wcag 2.1.1, axe scrollable-region-focusable) -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <pre tabindex="0" class="sg-link overflow-x-auto py-2 text-fg"><code>{code}</code></pre>
   {#if mounted}
     <div class="flex flex-wrap items-baseline gap-4">
       <Button type="button" onclick={copy}>copy</Button>

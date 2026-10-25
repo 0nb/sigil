@@ -56,3 +56,8 @@ test('rows are not focus traps; links in cells are the way in', () => {
   expect(screen.getAllByRole('row')[1]).not.toHaveAttribute('tabindex');
   expect(screen.getAllByRole('link', { name: '/x7kq2mp' })).toHaveLength(2);
 });
+
+test('Pager takes a label so two pagers stay distinct', () => {
+  render(Pager, { props: { page: 1, pages: 3, label: 'links pages' } });
+  expect(screen.getByRole('navigation', { name: 'links pages' })).toBeInTheDocument();
+});

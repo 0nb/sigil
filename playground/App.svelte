@@ -68,6 +68,7 @@
   tags={{ left: '0nb', right: `sigil v${pkg.version}` }}
 >
   <div class="flex max-w-4xl flex-col gap-16 pb-24">
+    <h1 class="sr-only">sigil</h1>
     <section id="tokens">
       {@render head('tokens')}
       <Ls caption="color tokens" columns={[{ key: 'name', label: 'token' }, { key: 'value', label: 'value', dim: true }, { key: 'ratio', label: 'on black', align: 'right' }]}
@@ -115,7 +116,7 @@
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
-      <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} /></div>
+      <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} label="last page" /></div>
       <Scope points={pts} label="clicks, last 7 days" />
       <div class="grid gap-6 sm:grid-cols-2"><Scope points={[]} label="clicks" height={100} /><Scope points={[pts[0]]} label="clicks" height={100} /></div>
       <p class="text-small">trend <Spark values={[3, 9, 4, 12, 30, 22, 41]} /></p>

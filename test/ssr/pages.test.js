@@ -28,3 +28,11 @@ test('Locked posts a password form that works without JS', () => {
 test('Horizon server render is just the fallback', () => {
   expect(render(Horizon).body).toMatch(/<circle/);
 });
+
+test.each([
+  [NotFound, {}, 'nothing here.'],
+  [Expired, {}, 'this link has expired.'],
+  [Locked, { action: '/x' }, 'this link is locked.'],
+])('%o states its message as the page heading', (Page, props, text) => {
+  expect(render(Page, { props }).body).toMatch(new RegExp(`<h1[^>]*>${text.replace('.', '\\.')}</h1>`));
+});

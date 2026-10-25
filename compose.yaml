@@ -1,0 +1,13 @@
+services:
+  sigil:
+    build: .
+    command: pnpm dev --host 0.0.0.0 --port 5173 --strictPort
+    ports: ['5173:5173']
+    environment:
+      CI: ${CI:-}
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
