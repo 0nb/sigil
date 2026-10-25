@@ -51,3 +51,15 @@ test('Check toggles with space and submits its value', async () => {
   expect(box).toBeChecked();
   expect(box).toHaveAttribute('name', 'private');
 });
+
+test('Button pressed is a toggle', async () => {
+  const { rerender } = render(Button, { props: { type: 'button', pressed: true, children: snip('<span>7d</span>') } });
+  expect(screen.getByRole('button', { name: '7d' })).toHaveAttribute('aria-pressed', 'true');
+  await rerender({ pressed: false });
+  expect(screen.getByRole('button', { name: '7d' })).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('Button without pressed is a plain button', () => {
+  render(Button, { props: { children: snip('<span>fold</span>') } });
+  expect(screen.getByRole('button', { name: 'fold' })).not.toHaveAttribute('aria-pressed');
+});

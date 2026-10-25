@@ -50,3 +50,18 @@ test('no accessibility violations', async ({ page }) => {
   const { violations } = await new AxeBuilder({ page }).analyze();
   expect(violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
 });
+
+test('range selector shows the pressed choice', async ({ page }) => {
+  await page.goto('/');
+  const group = page.getByRole('group', { name: 'range' });
+  await group.scrollIntoViewIfNeeded();
+  await group.getByRole('button', { name: '7d' }).click();
+  await expect(group.getByRole('button', { name: '7d' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(group.getByRole('button', { name: '24h' })).toHaveAttribute('aria-pressed', 'false');
+  const dim = await group.getByRole('button', { name: '24h' }).evaluate((el) => getComputedStyle(el).color);
+  const bright = await group
+    .getByRole('button', { name: '7d' })
+    .evaluate((el) => getComputedStyle(el, '::before').color);
+  expect(dim).toBe('rgb(138, 138, 138)');
+  expect(bright).toBe('rgb(230, 230, 230)');
+});
