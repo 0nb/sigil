@@ -124,8 +124,14 @@
 @utility sg-td-r {
   @apply pl-4 text-right tabular-nums max-sm:pl-0 max-sm:text-left;
 }
-@utility sg-bar {
-  @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-6 text-label tracking-tag;
+@utility sg-top {
+  @apply relative z-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-rule bg-ground py-2 text-small;
+}
+@utility sg-tab {
+  @apply sg-link border-b border-transparent py-2.5 text-dim aria-[current=page]:border-fg aria-[current=page]:text-fg;
+}
+@utility sg-card {
+  @apply rounded-card border border-rule bg-card p-4 sm:p-5;
 }
 @utility sg-sigil {
   display: inline-block;

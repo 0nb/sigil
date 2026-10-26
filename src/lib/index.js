@@ -13,6 +13,7 @@ export { default as Pager } from './components/Pager.svelte';
 export { default as Scope } from './components/Scope.svelte';
 export { default as Spark } from './components/Spark.svelte';
 export { default as Shell } from './components/Shell.svelte';
+export { default as Card } from './components/Card.svelte';
 export { default as Code } from './components/Code.svelte';
 export { default as Horizon } from './components/Horizon.svelte';
 export { default as NotFound } from './pages/NotFound.svelte';

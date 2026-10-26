@@ -1,7 +1,7 @@
 <script>
   import {
     Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
-    Ls, Readout, Pager, Scope, Spark, Shell, Code, Horizon, NotFound, Expired, Locked,
+    Ls, Readout, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
@@ -112,7 +112,7 @@
       <div class="flex items-baseline gap-4">
         {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete fld.0nb.dev/x7kq2mp?" onyes={() => (answered = "delete")} onno={() => (answered = "keep")} />{/if}
       </div>
-      <Ls caption="links" {columns} {rows} key={(r) => r.id} />
+      <Card as="section"><Ls caption="links" {columns} {rows} key={(r) => r.id} /></Card>
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>

@@ -1,5 +1,5 @@
 <script>
-  import { Shell, Field, Button, Line, Ls, Pager } from '../../src/lib/index.js';
+  import { Shell, Card, Field, Button, Line, Ls, Pager } from '../../src/lib/index.js';
 
   // tailwind sees these and must generate nothing for them
   const bait = 'rounded-lg shadow-md bg-red-500 text-xl';
@@ -30,6 +30,8 @@
     </div>
     <Line kind="ok">ready</Line>
   </form>
-  <Ls caption="your links" {columns} {rows} key={(r) => r.id} />
-  <Pager {page} pages={4} onpage={(p) => (page = p)} />
+  <Card as="section">
+    <Ls caption="your links" {columns} {rows} key={(r) => r.id} />
+    <Pager {page} pages={4} onpage={(p) => (page = p)} />
+  </Card>
 </Shell>
