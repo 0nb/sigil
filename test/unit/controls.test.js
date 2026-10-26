@@ -117,3 +117,8 @@ test('Button without pressed is a plain button', () => {
   render(Button, { props: { children: snip('<span>fold</span>') } });
   expect(screen.getByRole('button', { name: 'fold' })).not.toHaveAttribute('aria-pressed');
 });
+
+test('Button label names a symbol-only button', () => {
+  render(Button, { props: { type: 'button', variant: 'ghost', label: 'more for fld.0nb.dev/x7kq2mp', children: snip('<span>⋯</span>') } });
+  expect(screen.getByRole('button', { name: 'more for fld.0nb.dev/x7kq2mp' })).toBeInTheDocument();
+});

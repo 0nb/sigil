@@ -9,7 +9,7 @@
       <span aria-hidden="true" class="sg-sigil"></span>{name}
     </a>
     {#if nav.length}
-      <nav aria-label="main" class="flex gap-6">
+      <nav aria-label="main" class="flex flex-wrap gap-x-6">
         {#each nav as item (item.href)}
           <a href={item.href} aria-current={item.current ? 'page' : undefined} class="sg-tab">{item.label}</a>
         {/each}
@@ -17,5 +17,5 @@
     {/if}
     {@render account?.()}
   </header>
-  <main class="sg-gutter relative" data-grid={grid ? '' : undefined}>{@render children()}</main>
+  <main class="sg-gutter relative py-8" data-grid={grid ? '' : undefined}>{@render children()}</main>
 </div>
