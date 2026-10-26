@@ -23,6 +23,11 @@ test('exact token values', () => {
   expect(['tag', 'label', 'small', 'body', 'input', 'display'].map(token)).toEqual(['10px', '11px', '12px', '13px', '15px', '28px']);
 });
 
+test('red accent: exact value, readable on ground', () => {
+  expect(token('red')).toBe('#ff3b30');
+  expect(contrast('#ff3b30', '#000000')).toBeGreaterThanOrEqual(4.5);
+});
+
 test('readable text passes AA on ground, ghost does not', () => {
   expect(contrast('#e6e6e6', '#000000')).toBeGreaterThanOrEqual(4.5);
   expect(contrast('#8a8a8a', '#000000')).toBeGreaterThanOrEqual(4.5);
