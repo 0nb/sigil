@@ -7,4 +7,6 @@ test('confirm works as a plain form', () => {
   expect(c.match(/name="confirm"/g)).toHaveLength(2);
   expect(c).toContain('value="y"');
   expect(c).toContain('value="n"');
+  expect(c).toMatch(/value="y"[^>]*>(<!---->)?delete</);
+  expect(c).toMatch(/value="n"[^>]*>(<!---->)?keep</);
 });

@@ -110,7 +110,7 @@
         <Spinner />
       </div>
       <div class="flex items-baseline gap-4">
-        {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete /x7kq2mp?" onyes={() => (answered = 'y')} onno={() => (answered = 'n')} />{/if}
+        {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete fld.0nb.dev/x7kq2mp?" onyes={() => (answered = "delete")} onno={() => (answered = "keep")} />{/if}
       </div>
       <Ls caption="links" {columns} {rows} key={(r) => r.id} />
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>

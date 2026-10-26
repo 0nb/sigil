@@ -1,29 +1,17 @@
 <script>
   import Button from './Button.svelte';
 
-  /** @type {{ question: string, onyes?: () => void, onno?: () => void, name?: string }} */
-  let { question, onyes, onno, name } = $props();
+  /** @type {{ question: string, yes?: string, no?: string, onyes?: () => void, onno?: () => void, name?: string }} */
+  let { question, yes = 'delete', no = 'keep', onyes, onno, name } = $props();
 
   /** @type {HTMLElement | undefined} */
   let root = $state();
-  const buttons = () => /** @type {NodeListOf<HTMLButtonElement>} */ (root?.querySelectorAll('button') ?? []);
+  const safe = () => /** @type {HTMLButtonElement | undefined} */ (root?.querySelectorAll('button')[1]);
 
+  // the safe answer has focus, so enter never deletes by accident
   $effect(() => {
-    buttons()[1]?.focus();
+    safe()?.focus();
   });
-
-  /** @param {KeyboardEvent} e */
-  function onkeydown(e) {
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-    const [yes, no] = buttons();
-    if (e.key === 'y') {
-      e.preventDefault();
-      yes?.click();
-    } else if (e.key === 'n' || e.key === 'Escape') {
-      e.preventDefault();
-      no?.click();
-    }
-  }
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -31,10 +19,10 @@
   bind:this={root}
   role="group"
   aria-label={question}
-  {onkeydown}
-  class="inline-flex flex-wrap items-baseline gap-3 text-body"
+  onkeydown={(e) => e.key === 'Escape' && (e.preventDefault(), safe()?.click())}
+  class="flex flex-wrap items-center gap-3"
 >
-  <span>{question}</span>
-  <Button type={name ? 'submit' : 'button'} {name} value="y" onclick={() => onyes?.()}>y</Button>
-  <Button type={name ? 'submit' : 'button'} {name} value="n" onclick={() => onno?.()}>n</Button>
+  <span class="mr-2">{question}</span>
+  <Button variant="primary" type={name ? 'submit' : 'button'} {name} value="y" onclick={() => onyes?.()}>{yes}</Button>
+  <Button type={name ? 'submit' : 'button'} {name} value="n" onclick={() => onno?.()}>{no}</Button>
 </div>
