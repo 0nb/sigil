@@ -5,6 +5,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
+// vitest sets NODE_ENV=test, which makes vite bundle svelte's dev runtime; weigh what ships
+process.env.NODE_ENV = 'production';
+
 const root = resolve('test/budget');
 /** @type {Map<string, Promise<{ css: string[], js: string[] }>>} */
 const built = new Map();
@@ -42,6 +45,11 @@ test('css and js stay within budget', async () => {
   console.log(`budget: css ${css} B gz, js +${js} B gz over an empty svelte app`);
   expect(css).toBeLessThanOrEqual(8 * 1024);
   expect(js).toBeLessThanOrEqual(10 * 1024);
+}, 60_000);
+
+test('budgets measure the production build', async () => {
+  // dev-only runtime warnings must not be in what we weigh
+  expect(text((await buildEntry('typical')).js)).not.toContain('await_reactivity_loss');
 }, 60_000);
 
 test('horizon is not in a normal page bundle', async () => {
