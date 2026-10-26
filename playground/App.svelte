@@ -18,7 +18,7 @@
   };
   const ratio = (/** @type {string} */ hex) => ((lum(hex) + 0.05) / 0.05).toFixed(1);
 
-  const sizes = [['tag', 'text-tag tracking-tag'], ['label', 'text-label'], ['small', 'text-small'], ['body', 'text-body'], ['input', 'text-input'], ['display', 'text-display']];
+  const sizes = [['tag', 'text-tag tracking-tag'], ['label', 'text-label'], ['small', 'text-small'], ['body', 'text-body'], ['lead', 'text-lead'], ['title', 'text-title'], ['display', 'text-display']];
 
   const rules = [
     'no boxes, cards, borders around groups, radius or shadows. structure comes from spacing, alignment and one underline.',

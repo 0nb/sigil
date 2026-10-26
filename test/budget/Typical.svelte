@@ -2,7 +2,7 @@
   import { Shell, Prompt, Button, Flag, Line, Ls, Pager } from '../../src/lib/index.js';
 
   // tailwind sees these and must generate nothing for them
-  const bait = 'rounded-lg shadow-md bg-red-500 font-sans text-xl';
+  const bait = 'rounded-lg shadow-md bg-red-500 text-xl';
 
   const rows = [
     { id: 'a', short: '/x7kq2mp', dest: 'github.com/0nb/sigil', clicks: 1284 },

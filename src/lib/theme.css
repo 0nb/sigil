@@ -18,22 +18,27 @@
   --color-ghost: var(--sg-ghost);
   --color-rule: var(--sg-rule);
   --color-grid: var(--sg-grid);
+  --color-card: var(--sg-card);
+  --font-sans: var(--sg-sans);
   --font-mono: var(--sg-mono);
   --text-tag: var(--sg-tag);
   --text-label: var(--sg-label);
   --text-small: var(--sg-small);
   --text-body: var(--sg-body);
-  --text-input: var(--sg-input);
+  --text-lead: var(--sg-lead);
+  --text-title: var(--sg-title);
   --text-display: var(--sg-display);
+  --text-display--line-height: 1.1;
   --tracking-tag: var(--sg-track);
-  --tracking-btn: var(--sg-track-btn);
+  --radius-ctl: var(--sg-radius);
+  --radius-card: var(--sg-radius-card);
 }
 
 @layer base {
   html {
     background: var(--sg-ground);
     color: var(--sg-fg);
-    font-family: var(--sg-mono);
+    font-family: var(--sg-sans);
     font-size: var(--sg-body);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -85,7 +90,7 @@
   @apply outline-hidden hover:text-fg focus-visible:text-fg focus-visible:underline;
 }
 @utility sg-btn {
-  @apply inline-flex cursor-pointer items-center tracking-btn text-fg outline-hidden disabled:cursor-default disabled:text-dim;
+  @apply inline-flex cursor-pointer items-center text-fg outline-hidden disabled:cursor-default disabled:text-dim;
   &::before,
   &::after {
     white-space: pre;
@@ -120,7 +125,7 @@
   }
 }
 @utility sg-prompt-in {
-  @apply flex-1 bg-transparent text-input text-fg outline-hidden placeholder:text-dim disabled:text-dim;
+  @apply flex-1 bg-transparent text-body text-fg outline-hidden placeholder:text-dim disabled:text-dim;
   caret-color: var(--sg-fg);
   caret-shape: block;
 }

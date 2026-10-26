@@ -50,7 +50,7 @@ test('horizon is not in a normal page bundle', async () => {
 
 test('generic saas utilities do not exist', async () => {
   const css = text((await buildEntry('typical')).css);
-  for (const cls of ['.rounded-lg', '.shadow-md', '.bg-red-500', '.font-sans', '.text-xl']) {
+  for (const cls of ['.rounded-lg', '.shadow-md', '.bg-red-500', '.text-xl']) {
     expect(css).not.toContain(cls);
   }
   expect(css).not.toMatch(/@font-face/);
