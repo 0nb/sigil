@@ -1,9 +1,9 @@
 <script>
-  /** @type {{ type?: 'submit' | 'button', name?: string, value?: string, disabled?: boolean, pressed?: boolean, onclick?: (e: MouseEvent) => void, children?: import('svelte').Snippet, class?: string }} */
-  let { type = 'submit', name, value, disabled, pressed, onclick, children, class: klass = '' } = $props();
+  /** @type {{ type?: 'submit' | 'button', name?: string, value?: string, disabled?: boolean, pressed?: boolean, label?: string, variant?: 'primary' | 'secondary' | 'ghost', size?: 'small', onclick?: (e: MouseEvent) => void, children?: import('svelte').Snippet, class?: string }} */
+  let { type = 'submit', name, value, disabled, pressed, label, variant = 'secondary', size, onclick, children, class: klass = '' } = $props();
 </script>
 
-<!-- links take the same look with: <a class="group sg-btn"><span class="sg-btn-label">…</span></a> -->
-<button {type} {name} {value} {disabled} aria-pressed={pressed} {onclick} class="group sg-btn {klass}"
-  ><span class="sg-btn-label">{@render children?.()}</span></button
+<!-- links take the same look with: <a class="sg-btn" data-variant="primary">…</a> -->
+<button {type} {name} {value} {disabled} aria-pressed={pressed} aria-label={label} data-variant={variant} data-size={size} {onclick} class="sg-btn {klass}"
+  >{@render children?.()}</button
 >

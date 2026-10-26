@@ -53,7 +53,7 @@ test('Spinner animates, and is static under reduced motion', async () => {
 
 test('Empty shows title and hint', () => {
   render(Empty, { props: { title: 'no links yet', hint: 'paste a url above and press enter.' } });
-  expect(screen.getByText('no links yet')).toBeInTheDocument();
+  expect(screen.getByText('no links yet')).toHaveClass('text-title');
   expect(screen.getByText('paste a url above and press enter.')).toHaveClass('text-dim');
 });
 

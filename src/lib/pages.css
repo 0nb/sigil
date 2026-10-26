@@ -1,0 +1,6 @@
+/* static visitor pages: the theme, and only the sources the pages render */
+@import './theme.css';
+@source './pages';
+@source './components/Sigil.svelte';
+@source './components/Field.svelte';
+@source './components/Button.svelte';

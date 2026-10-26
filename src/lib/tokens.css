@@ -6,15 +6,19 @@
   --sg-rule: #2a2a2a;
   --sg-grid: rgb(255 255 255 / 0.07);
   --sg-red: #ff3b30;
+  --sg-card: #050505;
+  --sg-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --sg-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  --sg-tag: 10px;
-  --sg-label: 11px;
-  --sg-small: 12px;
-  --sg-body: 13px;
-  --sg-input: 15px;
-  --sg-display: 28px;
+  --sg-tag: 11px;
+  --sg-label: 13px;
+  --sg-small: 14px;
+  --sg-body: 16px;
+  --sg-lead: 18px;
+  --sg-title: 18px;
+  --sg-display: clamp(32px, 6vw, 44px);
   --sg-track: 0.3em;
-  --sg-track-btn: 0.2em;
+  --sg-radius: 6px;
+  --sg-radius-card: 10px;
   --sg-grid-size: 40px;
   color-scheme: dark;
 }

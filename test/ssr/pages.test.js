@@ -60,3 +60,15 @@ test.each([
   expect(id).toBeTruthy();
   expect(body).toMatch(new RegExp(`<main[^>]*aria-labelledby="${id}"`));
 });
+
+test('Locked has a visible password label and a primary open button', () => {
+  const body = render(Locked, { props: {} }).body;
+  const label = body.match(/<label[^>]*for="sg-password"[^>]*>/)?.[0];
+  expect(label).toBeTruthy();
+  expect(label).not.toContain('sr-only');
+  expect(body).toMatch(/<button[^>]*data-variant="primary"[^>]*>(<!---->)?open</);
+});
+
+test.each([NotFound, Expired, Locked])('%o heading is a title', (Page) => {
+  expect(render(Page, { props: {} }).body).toMatch(/<h1[^>]*class="[^"]*text-title/);
+});

@@ -1,7 +1,7 @@
 <script>
   import {
-    Sigil, Line, Status, Spinner, Empty, Prompt, Button, Check, Flag, Confirm,
-    Ls, Readout, Pager, Scope, Spark, Shell, Code, Horizon, NotFound, Expired, Locked,
+    Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
+    Ls, Readout, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
@@ -9,7 +9,7 @@
 
   const tokens = [
     ['ground', '#000000'], ['fg', '#e6e6e6'], ['dim', '#8a8a8a'],
-    ['ghost', '#4a4a4a'], ['rule', '#2a2a2a'],
+    ['ghost', '#4a4a4a'], ['rule', '#2a2a2a'], ['card', '#050505'], ['red', '#ff3b30'],
   ];
   const lum = (/** @type {string} */ hex) => {
     const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
@@ -18,20 +18,19 @@
   };
   const ratio = (/** @type {string} */ hex) => ((lum(hex) + 0.05) / 0.05).toFixed(1);
 
-  const sizes = [['tag', 'text-tag tracking-tag'], ['label', 'text-label'], ['small', 'text-small'], ['body', 'text-body'], ['input', 'text-input'], ['display', 'text-display']];
+  const sizes = [['tag', 'text-tag tracking-tag'], ['label', 'text-label'], ['small', 'text-small'], ['body', 'text-body'], ['lead', 'text-lead'], ['title', 'text-title'], ['display', 'text-display']];
 
   const rules = [
-    'no boxes, cards, borders around groups, radius or shadows. structure comes from spacing, alignment and one underline.',
-    'inputs are prompts: a > marker, the value, a block cursor when focused, one underline.',
-    'buttons are bracketed text: [ fold ]. the brackets are drawn in secondary text.',
-    'options are flags: --slug auto  --password none  --expires never. clicking or pressing enter on a flag edits it in place.',
-    'lists look like ls output: aligned columns, a tracked header in secondary text, a > marker on the hovered or focused row.',
+    'text is sans. mono only for links, slugs, codes and handles.',
+    'one primary button per screen, for the main action. secondary for the rest, ghost for row actions.',
+    'every field has a visible label. hints and errors sit under it, in plain words.',
+    'cards group what belongs together: one rule, 10px radius. no shadows, no colour.',
+    'confirmations use words: delete / keep. focus starts on the safe one.',
     'messages are lines prefixed with err or ok. monochrome, no red, no green.',
-    'confirmations are inline: delete /x7kq2mp? [ y ] [ n ].',
     'transient notices are a single status line, not toasts.',
     'loading is a braille spinner; static … under reduced motion.',
   ];
-  const copy = ['lowercase. always.', 'short. say what happened and what to do.', 'err / ok, never colors.', 'no emoji. no marketing.'];
+  const copy = ['lowercase. always.', 'short. say what happened and what to do next.', 'words over symbols.', 'no emoji. no marketing.'];
 
   const rows = [
     { id: 'a', short: '/x7kq2mp', dest: 'github.com/0nb/sigil', clicks: 1284 },
@@ -45,6 +44,11 @@
   ];
   /** @type {typeof rows} */
   const noRows = [];
+  const links = [
+    { id: 'a', short: 'fld.0nb.dev/signup-form', dest: 'docs.google.com/forms/d/e/1FAIpQLSf/viewform', tags: ['just now'], week: [0, 0, 0, 0, 0, 0, 0] },
+    { id: 'b', short: 'fld.0nb.dev/x7kq2mp', dest: 'www.example.com/blog/2026/10/how-we-built-a-tiny-link-shortener', tags: ['password', 'ends dec 31'], week: [9, 12, 10, 21, 17, 26, 33] },
+    { id: 'c', short: 'fld.0nb.dev/hello', dest: '0nb.dev', tags: ['business card'], week: [2, 2, 3, 2, 3, 2, 3] },
+  ];
   const pts = [3, 9, 4, 12, 30, 22, 41].map((v, i) => ({ t: Date.UTC(2026, 9, 18 + i), v }));
 
   /** @type {{ show: (t: string, k?: 'err' | 'ok' | 'plain') => void } | undefined} */
@@ -64,7 +68,7 @@
 
 <Shell
   name="sigil"
-  nav={[{ href: '#tokens', label: 'tokens', current: true }, { href: '#components', label: 'components' }, { href: '#pages', label: 'pages' }, { href: '#assets', label: 'assets' }]}
+  nav={[{ href: '#tokens', label: 'tokens', current: true }, { href: '#components', label: 'components' }, { href: '#dashboard', label: 'dashboard' }, { href: '#pages', label: 'pages' }, { href: '#assets', label: 'assets' }]}
   grid
   tags={{ left: '0nb', right: `sigil v${pkg.version}` }}
 >
@@ -74,14 +78,14 @@
       {@render head('tokens')}
       <Ls caption="color tokens" columns={[{ key: 'name', label: 'token' }, { key: 'value', label: 'value', dim: true }, { key: 'ratio', label: 'on black', align: 'right' }]}
         rows={tokens.map(([name, value]) => ({ name, value, ratio: name === 'ground' ? '—' : ratio(value) + ':1' }))} key={(r) => r.name} />
-      <p class="mt-3 text-small text-dim">ghost is decoration only.</p>
+      <p class="mt-3 text-small text-dim">ghost, rule and card are decoration only.</p>
       <div class="mt-8 flex flex-col gap-2">
         {#each sizes as [name, cls] (name)}<p class={cls}>{name} · the quick brown fox · 0123456789</p>{/each}
       </div>
     </section>
 
     <section>
-      {@render head('terminal rules')}
+      {@render head('look rules')}
       <ul class="mb-10 flex flex-col gap-2 text-small">{#each rules as r (r)}<li><span class="text-dim">- </span>{r}</li>{/each}</ul>
       {@render head('copy rules')}
       <ul class="flex flex-col gap-2 text-small">{#each copy as r (r)}<li><span class="text-dim">- </span>{r}</li>{/each}</ul>
@@ -91,28 +95,23 @@
       {@render head('components')}
       <div class="flex items-center gap-6"><Sigil /><Sigil size={18} weight={2.4} /><Sigil size={64} title="0nb" /></div>
       <div class="flex flex-col gap-4">
-        <Prompt name="url" label="destination url" placeholder="paste a long url" />
-        <Prompt name="bad" label="bad url" value="developers.cloudflare com" error='not a valid url. check the dot before "com".' />
-        <Prompt name="off" label="disabled" value="read only" disabled />
+        <Field name="bad" label="bad link" value="developers.cloudflare com" mono error="that doesn't look like a link. check the dot before “com”." />
+        <Field name="off" label="disabled" value="read only" disabled />
       </div>
-      <div class="flex flex-wrap items-baseline gap-6">
-        <Button type="button">fold</Button><Button type="button" disabled>fold</Button><a href="#components" class="group sg-btn"><span class="sg-btn-label">link</span></a>
+      <div class="flex flex-wrap items-center gap-3">
+        <Button type="button" variant="primary">save</Button><Button type="button">cancel</Button><Button type="button" variant="ghost">stats</Button><Button type="button" size="small">copy</Button><Button type="button" variant="primary" disabled>sending</Button><a href="#components" class="sg-btn" data-variant="ghost">link</a>
         <Check name="private" label="private" />
       </div>
-      <div class="flex flex-wrap gap-6">
-        <Flag name="slug" flag="slug" empty="auto" />
-        <Flag name="password" flag="password" kind="password" />
-        <Flag name="expires" flag="expires" kind="date" empty="never" />
-      </div>
+      <div class="max-w-xs"><Field name="find" label="search" type="search" labelHidden placeholder="search your links" /></div>
       <div class="flex flex-col gap-2">
         <Line kind="err">not a valid url.</Line><Line kind="ok">link folded.</Line><Line>plain line.</Line>
         <div class="flex items-baseline gap-6"><Button type="button" onclick={() => status?.show('copied', 'ok')}>notify</Button><Status bind:this={status} timeout={2000} /></div>
         <Spinner />
       </div>
       <div class="flex items-baseline gap-4">
-        {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete /x7kq2mp?" onyes={() => (answered = 'y')} onno={() => (answered = 'n')} />{/if}
+        {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete fld.0nb.dev/x7kq2mp?" onyes={() => (answered = "delete")} onno={() => (answered = "keep")} />{/if}
       </div>
-      <Ls caption="links" {columns} {rows} key={(r) => r.id} />
+      <Card as="section"><Ls caption="links" {columns} {rows} key={(r) => r.id} /></Card>
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
@@ -126,6 +125,52 @@
       <p class="text-small">trend <Spark values={[3, 9, 4, 12, 30, 22, 41]} /></p>
       <Code code="curl -X POST https://fld.0nb.dev/api/v2/links -d url=https://0nb.dev" />
       <div><Button type="button" onclick={() => (horizon = !horizon)}>horizon {horizon ? 'off' : 'on'}</Button></div>
+    </section>
+
+    <section id="dashboard" class="flex flex-col gap-6">
+      {@render head('dashboard')}
+      <form class="sg-card flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <Field name="long" label="paste a long link" type="url" mono placeholder="https://" />
+          <Button variant="primary">fold it</Button>
+        </div>
+        <details open class="text-small">
+          <summary class="cursor-pointer text-dim">more options</summary>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <Field name="slug" label="custom ending" prefix="fld.0nb.dev/" mono hint="letters, numbers and dashes" />
+            <Field name="expires" label="stop working on" type="date" hint="leave it empty and the link never stops" />
+            <Field name="password" label="password" type="password" placeholder="none — anyone with the link can open it" autocomplete="new-password" />
+            <Field name="note" label="note (only you see it)" placeholder="e.g. november newsletter" />
+          </div>
+        </details>
+      </form>
+      <div class="flex flex-wrap items-center justify-between gap-3 rounded-card border border-fg p-4">
+        <div class="min-w-0"><p class="text-label text-dim">your short link is ready</p><p class="truncate font-mono text-lead">fld.0nb.dev/signup-form</p></div>
+        <Button type="button" variant="primary" size="small">copy</Button>
+      </div>
+      <Card as="section">
+        <div class="mb-2 flex flex-wrap items-center justify-between gap-3">
+          <h3 class="text-title font-semibold">your links</h3>
+          <div class="w-full sm:w-56"><Field name="q" label="search your links" type="search" labelHidden placeholder="search your links" /></div>
+        </div>
+        <ul>
+          {#each links as l (l.id)}
+            <li class="grid gap-3 border-t border-rule py-4 sm:grid-cols-[minmax(0,1fr)_8rem_auto] sm:items-center">
+              <div class="min-w-0">
+                <p class="truncate font-mono">{l.short}</p>
+                <p class="truncate text-small text-dim">{l.dest}</p>
+                <p class="mt-1.5 flex flex-wrap gap-1.5">{#each l.tags as t (t)}<span class="rounded-ctl border border-rule px-1.5 text-tag text-dim">{t}</span>{/each}</p>
+              </div>
+              <p class="flex items-center gap-2 text-small text-dim sm:flex-col sm:items-start sm:gap-1"><Spark values={l.week} /><span><span class="text-fg">{l.week.reduce((a, b) => a + b, 0)}</span> this week</span></p>
+              <div class="flex gap-1">
+                <Button type="button" variant="ghost" size="small">copy</Button>
+                <Button type="button" variant="ghost" size="small">stats</Button>
+                <Button type="button" variant="ghost" size="small" label="more for {l.short}">⋯</Button>
+              </div>
+            </li>
+          {/each}
+        </ul>
+      </Card>
     </section>
 
     <section id="pages" class="flex flex-col gap-6">

@@ -20,7 +20,22 @@ test('exact token values', () => {
   expect(token('rule')).toBe('#2a2a2a');
   expect(token('grid')).toBe('rgb(255 255 255 / 0.07)');
   expect(token('mono')).toBe('ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace');
-  expect(['tag', 'label', 'small', 'body', 'input', 'display'].map(token)).toEqual(['10px', '11px', '12px', '13px', '15px', '28px']);
+  expect(token('sans')).toBe('system-ui, -apple-system, "Segoe UI", Roboto, sans-serif');
+  expect(token('card')).toBe('#050505');
+  expect(['tag', 'label', 'small', 'body', 'lead', 'title'].map(token)).toEqual(['11px', '13px', '14px', '16px', '18px', '18px']);
+  expect(token('display')).toBe('clamp(32px, 6vw, 44px)');
+  expect([token('radius'), token('radius-card')]).toEqual(['6px', '10px']);
+  expect(css).not.toMatch(/--sg-input|--sg-track-btn/);
+});
+
+test('theme: sans text at 16px, tokens exposed to tailwind', () => {
+  const theme = readFileSync('src/lib/theme.css', 'utf8');
+  const html = theme.match(/html\s*\{([^}]+)\}/)[1];
+  expect(html).toMatch(/font-family:\s*var\(--sg-sans\)/);
+  expect(html).toMatch(/font-size:\s*var\(--sg-body\)/);
+  for (const v of ['--font-sans', '--font-mono', '--radius-ctl', '--radius-card', '--color-card', '--text-lead', '--text-title']) {
+    expect(theme).toContain(`${v}:`);
+  }
 });
 
 test('red accent: exact value, readable on ground', () => {
@@ -37,4 +52,14 @@ test('readable text passes AA on ground, ghost does not', () => {
 test('dark only', () => {
   expect(css).toMatch(/color-scheme:\s*dark/);
   expect(css).not.toMatch(/prefers-color-scheme/);
+});
+
+test('no bracket decorations', () => {
+  const theme = readFileSync('src/lib/theme.css', 'utf8');
+  expect(theme).not.toMatch(/content:\s*'[\[\] ]+'/);
+  expect(theme).not.toContain('sg-btn-label');
+  expect(theme).not.toContain("content-['>']");
+  for (const f of ['Check']) {
+    expect(readFileSync(`src/lib/components/${f}.svelte`, 'utf8')).not.toMatch(/content-\['\[/);
+  }
 });

@@ -11,4 +11,11 @@
 @source "../node_modules/@0nb/sigil/src/lib";
 ```
 
+static visitor pages (`NotFound`, `Expired`, `Locked`), server-rendered with inline css:
+
+```css
+@import "tailwindcss" source(none);
+@import "@0nb/sigil/pages.css";
+```
+
 all rights reserved.

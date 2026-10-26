@@ -18,6 +18,7 @@
     },
     "./theme.css": "./src/lib/theme.css",
     "./tokens.css": "./src/lib/tokens.css",
+    "./pages.css": "./src/lib/pages.css",
     "./horizon": {
       "types": "./src/lib/horizon/horizon.d.ts",
       "default": "./src/lib/horizon/horizon.js"

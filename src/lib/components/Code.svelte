@@ -26,13 +26,13 @@
   }
 </script>
 
-<figure aria-label={label} class="text-small">
+<figure aria-label={label} class="flex flex-col gap-2 text-small">
   <!-- scrolling content must be keyboard-reachable (wcag 2.1.1, axe scrollable-region-focusable) -->
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <pre tabindex="0" class="sg-link overflow-x-auto py-2 text-fg"><code>{code}</code></pre>
+  <pre tabindex="0" class="overflow-x-auto rounded-ctl border border-rule bg-card px-3.5 py-3 font-mono text-fg outline-hidden focus-visible:border-fg"><code>{code}</code></pre>
   {#if mounted}
-    <div class="flex flex-wrap items-baseline gap-4">
-      <Button type="button" onclick={copy}>copy</Button>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button type="button" size="small" onclick={copy}>copy</Button>
       {#if result === 'ok'}
         <Line kind="ok">copied</Line>
       {:else if result === 'err'}

@@ -40,7 +40,7 @@
   </thead>
   <tbody class="max-sm:block">
     {#each rows as row (key(row))}
-      <tr class="group max-sm:block max-sm:py-2">
+      <tr class="border-b border-rule last:border-0 max-sm:block max-sm:py-3">
         {#each columns as col (col.key)}
           {@const v = valueOf(row, col)}
           <td

@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 test('every section renders', async ({ page }) => {
   await page.goto('/');
-  for (const h of ['tokens', 'terminal rules', 'copy rules', 'components', 'pages', 'assets'])
+  for (const h of ['tokens', 'look rules', 'copy rules', 'components', 'dashboard', 'pages', 'assets'])
     await expect(page.getByRole('heading', { name: h, exact: true })).toBeVisible();
 });
 
@@ -27,16 +27,64 @@ test('the overflow check catches a too-wide element', async ({ page }) => {
   expect(await overflows(page)).toBe(true);
 });
 
-test('prompt takes input and confirm answers by key', async ({ page }) => {
+test('confirm starts on keep, and enter keeps', async ({ page }) => {
   await page.goto('/');
-  const input = page.getByLabel('destination url');
+  const keep = page.getByRole('button', { name: 'keep', exact: true });
+  await expect(keep).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.getByText('answered keep.')).toBeVisible();
+});
+
+test('field takes input and shows focus on its box', async ({ page }) => {
+  await page.goto('/');
+  const input = page.getByLabel('paste a long link');
   await input.scrollIntoViewIfNeeded();
-  await input.fill('fld.0nb.dev');
-  await expect(input).toHaveValue('fld.0nb.dev');
-  const no = page.getByRole('button', { name: 'n', exact: true });
-  await no.focus();
-  await page.keyboard.press('y');
-  await expect(page.getByText('answered y.')).toBeVisible();
+  await input.fill('https://0nb.dev');
+  await expect(input).toHaveValue('https://0nb.dev');
+  const border = await input.evaluate((el) => getComputedStyle(/** @type {HTMLElement} */ (el.parentElement)).borderColor);
+  expect(border).toBe('rgb(230, 230, 230)');
+});
+
+test('keyboard focus on a button is outlined', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('paste a long link').focus();
+  await page.keyboard.press('Tab');
+  const fold = page.getByRole('button', { name: 'fold it' });
+  await expect(fold).toBeFocused();
+  expect(await fold.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('solid');
+});
+
+test('a disabled primary button looks disabled', async ({ page }) => {
+  await page.goto('/');
+  const b = page.getByRole('button', { name: 'sending' });
+  await b.hover({ force: true });
+  expect(await b.evaluate((el) => [getComputedStyle(el).backgroundColor, getComputedStyle(el).color])).toEqual([
+    'rgba(0, 0, 0, 0)',
+    'rgb(138, 138, 138)',
+  ]);
+});
+
+test('an invalid field still shows focus', async ({ page }) => {
+  await page.goto('/');
+  const input = page.getByLabel('bad link');
+  const box = (/** @type {Element} */ el) => getComputedStyle(/** @type {HTMLElement} */ (el.parentElement)).outlineStyle;
+  expect(await input.evaluate(box)).toBe('none');
+  await input.focus();
+  expect(await input.evaluate(box)).toBe('solid');
+});
+
+test('the grid sits behind the content', async ({ page }) => {
+  await page.goto('/');
+  const z = await page.locator('main[data-grid]').evaluate((el) => getComputedStyle(el, '::before').zIndex);
+  expect(z).toBe('-1');
+});
+
+test('buttons carry no bracket decorations', async ({ page }) => {
+  await page.goto('/');
+  const content = await page
+    .locator('.sg-btn')
+    .evaluateAll((els) => els.flatMap((el) => [getComputedStyle(el, '::before').content, getComputedStyle(el, '::after').content]));
+  expect([...new Set(content)]).toEqual(['none']);
 });
 
 test('spinner is static under reduced motion', async ({ page }) => {
@@ -56,20 +104,13 @@ test('range selector shows the pressed choice', async ({ page }) => {
   const group = page.getByRole('group', { name: 'range' });
   await group.scrollIntoViewIfNeeded();
   await group.getByRole('button', { name: '7d' }).click();
-  await page.mouse.move(0, 0); // hover also brightens brackets; measure the pressed rule alone
+  await page.mouse.move(0, 0);
   await expect(group.getByRole('button', { name: '7d' })).toHaveAttribute('aria-pressed', 'true');
   await expect(group.getByRole('button', { name: '24h' })).toHaveAttribute('aria-pressed', 'false');
-  const dim = await group.getByRole('button', { name: '24h' }).evaluate((el) => getComputedStyle(el).color);
-  const bright = await group
-    .getByRole('button', { name: '7d' })
-    .evaluate((el) => getComputedStyle(el, '::before').color);
-  expect(dim).toBe('rgb(138, 138, 138)');
-  expect(bright).toBe('rgb(230, 230, 230)');
-  const line = await group
-    .getByRole('button', { name: '7d' })
-    .locator('.sg-btn-label')
-    .evaluate((el) => getComputedStyle(el).textDecorationLine);
-  expect(line).toBe('underline');
+  const look = (name) =>
+    group.getByRole('button', { name }).evaluate((el) => [getComputedStyle(el).backgroundColor, getComputedStyle(el).color]);
+  expect(await look('7d')).toEqual(['rgb(230, 230, 230)', 'rgb(0, 0, 0)']);
+  expect(await look('24h')).toEqual(['rgba(0, 0, 0, 0)', 'rgb(230, 230, 230)']);
 });
 
 const pages = [

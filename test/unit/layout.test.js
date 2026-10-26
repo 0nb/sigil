@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { snip } from '../helpers.js';
 import Shell from '../../src/lib/components/Shell.svelte';
 import Code from '../../src/lib/components/Code.svelte';
+import Card from '../../src/lib/components/Card.svelte';
 
 test('Shell marks the current page and hides decorative tags', () => {
   const { container } = render(Shell, {
@@ -24,6 +25,51 @@ test('Shell marks the current page and hides decorative tags', () => {
   expect(screen.queryByText('fld.0nb.dev')).toBeNull();
 });
 
+test('Shell is a top bar: home, tabs, account; then main', () => {
+  const { container } = render(Shell, {
+    props: {
+      name: 'fold',
+      home: '/app',
+      grid: true,
+      nav: [
+        { href: '#/links', label: 'links', current: true },
+        { href: '#/account', label: 'account' },
+      ],
+      account: snip('<span>u-abc234</span>'),
+      children: snip('<p>body</p>'),
+    },
+  });
+  const bar = screen.getByRole('banner');
+  const home = screen.getByRole('link', { name: 'fold' });
+  expect(bar).toContainElement(home);
+  expect(home).toHaveAttribute('href', '/app');
+  expect(home).toHaveClass('font-mono');
+  expect(bar).toContainElement(screen.getByRole('navigation', { name: 'main' }));
+  expect(screen.getByRole('link', { name: 'account' })).not.toHaveAttribute('aria-current');
+  expect(bar).toContainElement(screen.getByText('u-abc234'));
+  expect(screen.getByRole('main')).toHaveTextContent('body');
+  expect(container.querySelector('[data-grid]')).not.toBeNull();
+});
+
+test('Shell without grid paints none', () => {
+  const { container } = render(Shell, { props: { name: 'fold', children: snip('<p>x</p>') } });
+  expect(container.querySelector('[data-grid]')).toBeNull();
+  expect(screen.queryByRole('navigation')).toBeNull();
+});
+
+test('Card wraps its content, as a section when asked', () => {
+  const { container } = render(Card, { props: { as: 'section', class: 'mt-4', children: snip('<p>inside</p>') } });
+  const card = /** @type {HTMLElement} */ (container.querySelector('.sg-card'));
+  expect(card.tagName).toBe('SECTION');
+  expect(card).toHaveClass('mt-4');
+  expect(card).toHaveTextContent('inside');
+});
+
+test('Card is a div by default', () => {
+  const { container } = render(Card, { props: { children: snip('<p>x</p>') } });
+  expect(container.querySelector('.sg-card')?.tagName).toBe('DIV');
+});
+
 test('Code copies, and reports a refused clipboard', async () => {
   const user = userEvent.setup(); // installs its own clipboard stub, so override after it
   const writeText = vi.fn().mockResolvedValueOnce().mockRejectedValueOnce(new Error('denied'));
@@ -39,4 +85,6 @@ test('Code scroll area is reachable by keyboard', () => {
   render(Code, { props: { code: 'x'.repeat(500), label: 'install' } });
   const pre = document.querySelector('pre');
   expect(pre).toHaveAttribute('tabindex', '0');
+  expect(pre).toHaveClass('font-mono');
+  expect(screen.getByRole('button', { name: 'copy' })).toHaveAttribute('data-size', 'small');
 });

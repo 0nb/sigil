@@ -18,22 +18,27 @@
   --color-ghost: var(--sg-ghost);
   --color-rule: var(--sg-rule);
   --color-grid: var(--sg-grid);
+  --color-card: var(--sg-card);
+  --font-sans: var(--sg-sans);
   --font-mono: var(--sg-mono);
   --text-tag: var(--sg-tag);
   --text-label: var(--sg-label);
   --text-small: var(--sg-small);
   --text-body: var(--sg-body);
-  --text-input: var(--sg-input);
+  --text-lead: var(--sg-lead);
+  --text-title: var(--sg-title);
   --text-display: var(--sg-display);
+  --text-display--line-height: 1.1;
   --tracking-tag: var(--sg-track);
-  --tracking-btn: var(--sg-track-btn);
+  --radius-ctl: var(--sg-radius);
+  --radius-card: var(--sg-radius-card);
 }
 
 @layer base {
   html {
     background: var(--sg-ground);
     color: var(--sg-fg);
-    font-family: var(--sg-mono);
+    font-family: var(--sg-sans);
     font-size: var(--sg-body);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -71,6 +76,7 @@
     content: '';
     position: fixed;
     inset: 0;
+    z-index: -1;
     pointer-events: none;
     @apply sg-grid;
   }
@@ -85,76 +91,105 @@
   @apply outline-hidden hover:text-fg focus-visible:text-fg focus-visible:underline;
 }
 @utility sg-btn {
-  @apply inline-flex cursor-pointer items-center tracking-btn text-fg outline-hidden disabled:cursor-default disabled:text-dim;
-  &::before,
-  &::after {
-    white-space: pre;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--sg-ghost);
+  border-radius: var(--sg-radius);
+  font-size: var(--sg-body);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--sg-fg);
+  cursor: pointer;
+  &:not(:disabled):hover {
+    border-color: var(--sg-fg);
+  }
+  &:is([data-variant='primary'], [aria-pressed='true']) {
+    border-color: var(--sg-fg);
+    background: var(--sg-fg);
+    color: var(--sg-ground);
+  }
+  &[data-variant='ghost']:not([aria-pressed]) {
+    border-color: transparent;
+    padding: 0 8px;
     color: var(--sg-dim);
   }
-  &::before {
-    content: '[ ' / '';
-  }
-  &::after {
-    content: ' ]' / '';
-  }
-  &:hover::before,
-  &:hover::after,
-  &:focus-visible::before,
-  &:focus-visible::after,
-  &[aria-pressed='true']::before,
-  &[aria-pressed='true']::after {
+  &[data-variant='ghost']:not([aria-pressed], :disabled):is(:hover, :focus-visible) {
     color: var(--sg-fg);
   }
-  &[aria-pressed='false'] {
+  &[data-size='small'] {
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: var(--sg-small);
+  }
+  /* after the variants, so a disabled primary or pressed button reads as disabled */
+  &:disabled {
+    cursor: default;
     color: var(--sg-dim);
   }
-}
-@utility sg-btn-label {
-  @apply underline-offset-4 group-hover:underline group-focus-visible:underline group-disabled:no-underline group-aria-pressed:underline;
-}
-@utility sg-prompt {
-  @apply flex items-center gap-3 border-b border-rule py-2 focus-within:border-fg;
-  &::before {
-    content: '>' / '';
-    color: var(--sg-dim);
+  &:disabled:not([data-variant='ghost']) {
+    border-color: var(--sg-rule);
+    background: none;
   }
 }
-@utility sg-prompt-in {
-  @apply flex-1 bg-transparent text-input text-fg outline-hidden placeholder:text-dim disabled:text-dim;
-  caret-color: var(--sg-fg);
-  caret-shape: block;
+@utility sg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
-@utility sg-flag {
-  @apply inline-flex max-w-full min-w-0 cursor-pointer items-baseline gap-2 text-small;
-}
-@utility sg-flag-in {
-  @apply border-b border-transparent bg-transparent text-fg outline-hidden placeholder:text-dim focus:border-fg;
-}
-@utility sg-flag-date {
-  @apply relative inline-block;
-  &[data-empty]::after {
-    content: attr(data-empty) / '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: var(--sg-dim);
-    pointer-events: none;
+@utility sg-field-box {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--sg-ghost);
+  border-radius: var(--sg-radius);
+  &:focus-within,
+  &[data-invalid] {
+    border-color: var(--sg-fg);
   }
-  &[data-empty]:focus-within::after {
-    content: none;
+  /* the ring, not the border, shows focus: an invalid field already has a bright border */
+  &:focus-within {
+    outline: 1px solid var(--sg-fg);
+    outline-offset: 2px;
+  }
+}
+@utility sg-field-in {
+  flex: 1;
+  align-self: stretch;
+  background: none;
+  font-size: var(--sg-body);
+  color: var(--sg-fg);
+  outline: none;
+  &::placeholder,
+  &:disabled {
+    color: var(--sg-dim);
   }
 }
 @utility sg-th {
-  @apply border-b border-rule pb-1.5 text-tag font-normal tracking-tag text-dim;
+  @apply border-b border-rule pb-2 text-label font-normal text-dim;
 }
 @utility sg-td {
-  @apply sg-td-mark max-w-0 py-1 max-sm:block max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
+  @apply max-w-0 py-3 max-sm:block max-sm:py-0.5 max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
 }
 @utility sg-td-r {
   @apply pl-4 text-right tabular-nums max-sm:pl-0 max-sm:text-left;
 }
-@utility sg-bar {
-  @apply flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-6 text-label tracking-tag;
+@utility sg-top {
+  @apply relative z-10 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-b border-rule bg-ground py-2 text-small;
+}
+@utility sg-tab {
+  @apply sg-link border-b border-transparent py-2.5 text-dim aria-[current=page]:border-fg aria-[current=page]:text-fg;
+}
+@utility sg-card {
+  @apply rounded-card border border-rule bg-card p-4 sm:p-5;
 }
 @utility sg-sigil {
   display: inline-block;
@@ -163,9 +198,6 @@
   background: currentColor;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23000' stroke-width='2.4'%3E%3Ccircle cx='20' cy='20' r='11'/%3E%3Cpath d='M20 2V38'/%3E%3C/svg%3E")
     center / contain no-repeat;
-}
-@utility sg-td-mark {
-  @apply relative sm:first:before:absolute sm:first:before:-left-[2ch] sm:first:before:invisible sm:first:before:text-dim sm:first:before:content-['>'] sm:group-hover:first:before:visible sm:group-focus-within:first:before:visible;
 }
 @utility sg-shell {
   &::before,
@@ -197,7 +229,4 @@
       right: 1.25rem;
     }
   }
-}
-@utility sg-pg {
-  @apply sg-link cursor-pointer text-dim aria-disabled:cursor-default aria-disabled:text-ghost disabled:cursor-default disabled:text-ghost;
 }
