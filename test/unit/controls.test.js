@@ -103,6 +103,7 @@ test('Check toggles with space and submits its value', async () => {
   await user.keyboard(' ');
   expect(box).toBeChecked();
   expect(box).toHaveAttribute('name', 'private');
+  expect(box).not.toHaveClass('sr-only');
 });
 
 test('Button pressed is a toggle', async () => {

@@ -58,4 +58,8 @@ test('no bracket decorations', () => {
   const theme = readFileSync('src/lib/theme.css', 'utf8');
   expect(theme).not.toMatch(/content:\s*'[\[\] ]+'/);
   expect(theme).not.toContain('sg-btn-label');
+  expect(theme).not.toContain("content-['>']");
+  for (const f of ['Check']) {
+    expect(readFileSync(`src/lib/components/${f}.svelte`, 'utf8')).not.toMatch(/content-\['\[/);
+  }
 });

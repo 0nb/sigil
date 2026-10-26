@@ -5,11 +5,7 @@
   const id = $props.id();
 </script>
 
-<label for={id} class="inline-flex cursor-pointer items-center gap-2 text-body">
-  <input {id} type="checkbox" {name} {value} {disabled} {checked} onchange={(e) => (checked = e.currentTarget.checked)} class="peer sr-only" />
-  <span
-    aria-hidden="true"
-    class="whitespace-pre text-dim peer-checked:text-fg peer-focus-visible:text-fg before:content-['[_]'] peer-checked:before:content-['[x]']"
-  ></span>
-  <span class="underline-offset-4 peer-focus-visible:underline">{label}</span>
+<label for={id} class="inline-flex min-h-11 cursor-pointer items-center gap-2.5 text-body">
+  <input {id} type="checkbox" {name} {value} {disabled} {checked} onchange={(e) => (checked = e.currentTarget.checked)} class="size-[18px] cursor-pointer accent-fg" />
+  {label}
 </label>

@@ -45,8 +45,10 @@ test.each([
 test('Pager clamps and never pages past the ends', async () => {
   const onpage = vi.fn();
   render(Pager, { props: { page: 99, pages: 12, onpage } });
-  expect(screen.getByRole('navigation', { name: 'pages' })).toHaveTextContent('12/12');
+  expect(screen.getByRole('navigation', { name: 'pages' })).toHaveTextContent('12 of 12');
   expect(screen.getByRole('button', { name: 'next page' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: 'next page' })).toHaveClass('sg-btn');
+  expect(screen.getByRole('button', { name: 'next page' })).toHaveAttribute('data-size', 'small');
   await user.click(screen.getByRole('button', { name: 'previous page' }));
   expect(onpage).toHaveBeenCalledWith(11);
 });

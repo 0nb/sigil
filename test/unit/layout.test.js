@@ -85,4 +85,6 @@ test('Code scroll area is reachable by keyboard', () => {
   render(Code, { props: { code: 'x'.repeat(500), label: 'install' } });
   const pre = document.querySelector('pre');
   expect(pre).toHaveAttribute('tabindex', '0');
+  expect(pre).toHaveClass('font-mono');
+  expect(screen.getByRole('button', { name: 'copy' })).toHaveAttribute('data-size', 'small');
 });

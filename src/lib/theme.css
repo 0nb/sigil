@@ -116,10 +116,10 @@
   @apply flex-1 self-stretch bg-transparent text-body text-fg outline-hidden placeholder:text-dim disabled:text-dim;
 }
 @utility sg-th {
-  @apply border-b border-rule pb-1.5 text-tag font-normal tracking-tag text-dim;
+  @apply border-b border-rule pb-2 text-label font-normal text-dim;
 }
 @utility sg-td {
-  @apply sg-td-mark max-w-0 py-1 max-sm:block max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
+  @apply max-w-0 py-3 max-sm:block max-sm:py-0.5 max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
 }
 @utility sg-td-r {
   @apply pl-4 text-right tabular-nums max-sm:pl-0 max-sm:text-left;
@@ -140,9 +140,6 @@
   background: currentColor;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23000' stroke-width='2.4'%3E%3Ccircle cx='20' cy='20' r='11'/%3E%3Cpath d='M20 2V38'/%3E%3C/svg%3E")
     center / contain no-repeat;
-}
-@utility sg-td-mark {
-  @apply relative sm:first:before:absolute sm:first:before:-left-[2ch] sm:first:before:invisible sm:first:before:text-dim sm:first:before:content-['>'] sm:group-hover:first:before:visible sm:group-focus-within:first:before:visible;
 }
 @utility sg-shell {
   &::before,
@@ -174,7 +171,4 @@
       right: 1.25rem;
     }
   }
-}
-@utility sg-pg {
-  @apply sg-link cursor-pointer text-dim aria-disabled:cursor-default aria-disabled:text-ghost disabled:cursor-default disabled:text-ghost;
 }

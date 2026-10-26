@@ -3,7 +3,7 @@
   let { title, hint } = $props();
 </script>
 
-<div class="text-body">
-  <p class="text-fg">{title}</p>
+<div class="flex flex-col gap-1 text-body">
+  <p class="text-title font-semibold text-fg">{title}</p>
   {#if hint}<p class="text-dim">{hint}</p>{/if}
 </div>
