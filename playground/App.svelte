@@ -9,7 +9,7 @@
 
   const tokens = [
     ['ground', '#000000'], ['fg', '#e6e6e6'], ['dim', '#8a8a8a'],
-    ['ghost', '#4a4a4a'], ['rule', '#2a2a2a'], ['card', '#050505'],
+    ['ghost', '#4a4a4a'], ['rule', '#2a2a2a'], ['card', '#050505'], ['red', '#ff3b30'],
   ];
   const lum = (/** @type {string} */ hex) => {
     const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
