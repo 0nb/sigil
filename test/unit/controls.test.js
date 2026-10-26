@@ -30,12 +30,23 @@ test('Prompt keeps a 2,000-char value inside its width', () => {
   expect(screen.getByLabelText('u')).toHaveClass('min-w-0', 'w-full');
 });
 
-test('Button is a submit button with brackets that are not read out', () => {
+test('Button is a secondary submit button by default', () => {
   render(Button, { props: { children: snip('<span>fold</span>') } });
   const b = screen.getByRole('button', { name: 'fold' });
   expect(b).toHaveAttribute('type', 'submit');
   expect(b.textContent.trim()).toBe('fold');
   expect(b).toHaveClass('sg-btn');
+  expect(b).toHaveAttribute('data-variant', 'secondary');
+  expect(b).not.toHaveAttribute('data-size');
+});
+
+test('Button variants and small size', async () => {
+  const { rerender } = render(Button, { props: { variant: 'primary', children: snip('<span>fold</span>') } });
+  const b = screen.getByRole('button', { name: 'fold' });
+  expect(b).toHaveAttribute('data-variant', 'primary');
+  await rerender({ variant: 'ghost', size: 'small' });
+  expect(b).toHaveAttribute('data-variant', 'ghost');
+  expect(b).toHaveAttribute('data-size', 'small');
 });
 
 test('Button accepts an extra class', () => {

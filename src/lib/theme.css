@@ -90,32 +90,18 @@
   @apply outline-hidden hover:text-fg focus-visible:text-fg focus-visible:underline;
 }
 @utility sg-btn {
-  @apply inline-flex cursor-pointer items-center text-fg outline-hidden disabled:cursor-default disabled:text-dim;
-  &::before,
-  &::after {
-    white-space: pre;
-    color: var(--sg-dim);
+  @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-ctl border border-ghost px-[18px] text-body whitespace-nowrap text-fg hover:border-fg disabled:cursor-default disabled:border-rule disabled:bg-transparent disabled:text-dim;
+  font-weight: 500;
+  &[data-variant='primary'],
+  &[aria-pressed='true'] {
+    @apply border-fg bg-fg text-ground;
   }
-  &::before {
-    content: '[ ' / '';
+  &[data-variant='ghost']:not([aria-pressed]) {
+    @apply border-transparent px-2 text-dim hover:text-fg focus-visible:text-fg;
   }
-  &::after {
-    content: ' ]' / '';
+  &[data-size='small'] {
+    @apply min-h-8 px-3 text-small;
   }
-  &:hover::before,
-  &:hover::after,
-  &:focus-visible::before,
-  &:focus-visible::after,
-  &[aria-pressed='true']::before,
-  &[aria-pressed='true']::after {
-    color: var(--sg-fg);
-  }
-  &[aria-pressed='false'] {
-    color: var(--sg-dim);
-  }
-}
-@utility sg-btn-label {
-  @apply underline-offset-4 group-hover:underline group-focus-visible:underline group-disabled:no-underline group-aria-pressed:underline;
 }
 @utility sg-prompt {
   @apply flex items-center gap-3 border-b border-rule py-2 focus-within:border-fg;

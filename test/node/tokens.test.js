@@ -53,3 +53,9 @@ test('dark only', () => {
   expect(css).toMatch(/color-scheme:\s*dark/);
   expect(css).not.toMatch(/prefers-color-scheme/);
 });
+
+test('no bracket decorations', () => {
+  const theme = readFileSync('src/lib/theme.css', 'utf8');
+  expect(theme).not.toMatch(/content:\s*'[\[\] ]+'/);
+  expect(theme).not.toContain('sg-btn-label');
+});

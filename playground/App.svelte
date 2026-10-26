@@ -96,7 +96,7 @@
         <Prompt name="off" label="disabled" value="read only" disabled />
       </div>
       <div class="flex flex-wrap items-baseline gap-6">
-        <Button type="button">fold</Button><Button type="button" disabled>fold</Button><a href="#components" class="group sg-btn"><span class="sg-btn-label">link</span></a>
+        <Button type="button" variant="primary">fold it</Button><Button type="button">cancel</Button><Button type="button" variant="ghost">stats</Button><Button type="button" size="small">copy</Button><Button type="button" disabled>fold</Button><a href="#components" class="sg-btn" data-variant="ghost">link</a>
         <Check name="private" label="private" />
       </div>
       <div class="flex flex-wrap gap-6">
