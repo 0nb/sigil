@@ -1,5 +1,23 @@
 # changelog
 
+## [0.5.0](https://github.com/0nb/sigil/compare/v0.4.0...v0.5.0) (2026-10-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* friendly look — sans text, button variants, Field replaces Prompt and Flag, worded Confirm, Card, top-bar Shell, restyled components and visitor pages
+
+### features
+
+* friendly look — sans text, button variants, Field replaces Prompt and Flag, worded Confirm, Card, top-bar Shell, restyled components and visitor pages ([be1d5ef](https://github.com/0nb/sigil/commit/be1d5eff772f26a3f2ceb049e5a62fda0fef2294))
+* pages.css for static visitor pages ([be1d5ef](https://github.com/0nb/sigil/commit/be1d5eff772f26a3f2ceb049e5a62fda0fef2294))
+* red accent token ([#8](https://github.com/0nb/sigil/issues/8)) ([1234fa5](https://github.com/0nb/sigil/commit/1234fa5f1522c823a7e82a267623d244af7d0d9d))
+
+
+### fixes
+
+* disabled buttons look disabled, invalid fields show focus, the grid sits behind content ([be1d5ef](https://github.com/0nb/sigil/commit/be1d5eff772f26a3f2ceb049e5a62fda0fef2294))
+
 ## [0.4.0](https://github.com/0nb/sigil/compare/v0.3.0...v0.4.0) (2026-10-25)
 
 
