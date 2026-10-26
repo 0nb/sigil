@@ -1,10 +1,13 @@
 import { render } from 'svelte/server';
-import Prompt from '../../src/lib/components/Prompt.svelte';
+import Field from '../../src/lib/components/Field.svelte';
 import Button from '../../src/lib/components/Button.svelte';
 import Check from '../../src/lib/components/Check.svelte';
 
 test('controls render native form elements on the server', () => {
-  expect(render(Prompt, { props: { name: 'url', label: 'u' } }).body).toMatch(/<input[^>]*name="url"/);
+  const field = render(Field, { props: { name: 'url', label: 'u', type: 'date' } }).body;
+  expect(field).toMatch(/<label[^>]*for="sg-url"/);
+  expect(field).toMatch(/<input[^>]*name="url"/);
+  expect(field).toMatch(/<input[^>]*type="date"/);
   expect(render(Button, { props: {} }).body).toMatch(/<button[^>]*type="submit"/);
   const check = render(Check, { props: { name: 'p', label: 'p', checked: true } }).body;
   expect(check).toContain('type="checkbox"');

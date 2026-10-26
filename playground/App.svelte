@@ -1,6 +1,6 @@
 <script>
   import {
-    Sigil, Line, Status, Spinner, Empty, Prompt, Button, Check, Flag, Confirm,
+    Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
     Ls, Readout, Pager, Scope, Spark, Shell, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
@@ -91,18 +91,18 @@
       {@render head('components')}
       <div class="flex items-center gap-6"><Sigil /><Sigil size={18} weight={2.4} /><Sigil size={64} title="0nb" /></div>
       <div class="flex flex-col gap-4">
-        <Prompt name="url" label="destination url" placeholder="paste a long url" />
-        <Prompt name="bad" label="bad url" value="developers.cloudflare com" error='not a valid url. check the dot before "com".' />
-        <Prompt name="off" label="disabled" value="read only" disabled />
+        <Field name="url" label="paste a long link" type="url" mono placeholder="https://" />
+        <Field name="bad" label="bad link" value="developers.cloudflare com" mono error="that doesn't look like a link. check the dot before “com”." />
+        <Field name="off" label="disabled" value="read only" disabled />
       </div>
-      <div class="flex flex-wrap items-baseline gap-6">
+      <div class="flex flex-wrap items-center gap-3">
         <Button type="button" variant="primary">fold it</Button><Button type="button">cancel</Button><Button type="button" variant="ghost">stats</Button><Button type="button" size="small">copy</Button><Button type="button" disabled>fold</Button><a href="#components" class="sg-btn" data-variant="ghost">link</a>
         <Check name="private" label="private" />
       </div>
-      <div class="flex flex-wrap gap-6">
-        <Flag name="slug" flag="slug" empty="auto" />
-        <Flag name="password" flag="password" kind="password" />
-        <Flag name="expires" flag="expires" kind="date" empty="never" />
+      <div class="grid gap-4 sm:grid-cols-2">
+        <Field name="slug" label="custom ending" prefix="fld.0nb.dev/" mono hint="letters, numbers and dashes" />
+        <Field name="password" label="password" type="password" placeholder="none — anyone with the link can open it" />
+        <Field name="expires" label="stop working on" type="date" hint="leave empty: it never stops" />
       </div>
       <div class="flex flex-col gap-2">
         <Line kind="err">not a valid url.</Line><Line kind="ok">link folded.</Line><Line>plain line.</Line>

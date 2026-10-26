@@ -1,5 +1,5 @@
 <script>
-  import { Shell, Prompt, Button, Flag, Line, Ls, Pager } from '../../src/lib/index.js';
+  import { Shell, Field, Button, Line, Ls, Pager } from '../../src/lib/index.js';
 
   // tailwind sees these and must generate nothing for them
   const bait = 'rounded-lg shadow-md bg-red-500 text-xl';
@@ -20,13 +20,13 @@
 <Shell name="fold" nav={[{ href: '/', label: 'links', current: true }, { href: '/keys', label: 'keys' }]} data-bait={bait}>
   <form class="flex flex-col gap-3 py-6">
     <div class="flex items-center gap-4">
-      <Prompt name="url" label="destination url" error="not a valid url." />
-      <Button>fold</Button>
+      <Field name="url" label="paste a long link" type="url" mono error="that doesn't look like a link." />
+      <Button variant="primary">fold it</Button>
     </div>
-    <div class="flex flex-wrap gap-6">
-      <Flag name="slug" flag="slug" empty="auto" />
-      <Flag name="password" flag="password" kind="password" />
-      <Flag name="expires" flag="expires" kind="date" empty="never" />
+    <div class="grid gap-4 sm:grid-cols-2">
+      <Field name="slug" label="custom ending" prefix="fld.0nb.dev/" mono hint="letters, numbers and dashes" />
+      <Field name="password" label="password" type="password" placeholder="none" />
+      <Field name="expires" label="stop working on" type="date" />
     </div>
     <Line kind="ok">ready</Line>
   </form>

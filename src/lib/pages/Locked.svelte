@@ -1,6 +1,6 @@
 <script>
   import Sigil from '../components/Sigil.svelte';
-  import Prompt from '../components/Prompt.svelte';
+  import Field from '../components/Field.svelte';
   import Button from '../components/Button.svelte';
 
   /** @type {{ action?: string, error?: string, tags?: { left?: string, right?: string } }} */
@@ -12,7 +12,7 @@
     <Sigil size={64} class="text-dim" />
     <h1 id="sg-page-title" class="text-body font-normal">this link is locked.</h1>
     <form method="post" {action} class="flex w-full max-w-sm items-start gap-4">
-      <Prompt type="password" name="password" label="password" autofocus {error} />
+      <Field type="password" name="password" label="password" autofocus {error} />
       <Button class="mt-2.5">open</Button>
     </form>
   </main>

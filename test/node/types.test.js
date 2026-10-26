@@ -13,11 +13,11 @@ function consumer() {
   symlinkSync(resolve('node_modules/svelte'), join(dir, 'node_modules/svelte'));
   writeFileSync(
     join(dir, 'consumer.ts'),
-    `import { Pager, Ls, Prompt } from '@0nb/sigil';
+    `import { Pager, Ls, Field } from '@0nb/sigil';
 import { mount } from '@0nb/sigil/horizon';
 const handle: { destroy(): void } | null = mount(document.createElement('canvas'), { onready: () => {} });
 handle?.destroy();
-export const used = [Pager, Ls, Prompt];
+export const used = [Pager, Ls, Field];
 `,
   );
   writeFileSync(

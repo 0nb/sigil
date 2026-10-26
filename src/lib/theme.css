@@ -103,37 +103,17 @@
     @apply min-h-8 px-3 text-small;
   }
 }
-@utility sg-prompt {
-  @apply flex items-center gap-3 border-b border-rule py-2 focus-within:border-fg;
-  &::before {
-    content: '>' / '';
-    color: var(--sg-dim);
+@utility sg-field {
+  @apply flex w-full min-w-0 flex-col gap-2;
+}
+@utility sg-field-box {
+  @apply flex min-h-11 w-full items-center gap-0.5 rounded-ctl border border-ghost px-3.5 focus-within:border-fg;
+  &[data-invalid] {
+    border-color: var(--sg-fg);
   }
 }
-@utility sg-prompt-in {
-  @apply flex-1 bg-transparent text-body text-fg outline-hidden placeholder:text-dim disabled:text-dim;
-  caret-color: var(--sg-fg);
-  caret-shape: block;
-}
-@utility sg-flag {
-  @apply inline-flex max-w-full min-w-0 cursor-pointer items-baseline gap-2 text-small;
-}
-@utility sg-flag-in {
-  @apply border-b border-transparent bg-transparent text-fg outline-hidden placeholder:text-dim focus:border-fg;
-}
-@utility sg-flag-date {
-  @apply relative inline-block;
-  &[data-empty]::after {
-    content: attr(data-empty) / '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: var(--sg-dim);
-    pointer-events: none;
-  }
-  &[data-empty]:focus-within::after {
-    content: none;
-  }
+@utility sg-field-in {
+  @apply flex-1 self-stretch bg-transparent text-body text-fg outline-hidden placeholder:text-dim disabled:text-dim;
 }
 @utility sg-th {
   @apply border-b border-rule pb-1.5 text-tag font-normal tracking-tag text-dim;
