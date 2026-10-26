@@ -76,6 +76,7 @@
     content: '';
     position: fixed;
     inset: 0;
+    z-index: -1;
     pointer-events: none;
     @apply sg-grid;
   }
@@ -90,30 +91,87 @@
   @apply outline-hidden hover:text-fg focus-visible:text-fg focus-visible:underline;
 }
 @utility sg-btn {
-  @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-ctl border border-ghost px-[18px] text-body whitespace-nowrap text-fg hover:border-fg disabled:cursor-default disabled:border-rule disabled:bg-transparent disabled:text-dim;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--sg-ghost);
+  border-radius: var(--sg-radius);
+  font-size: var(--sg-body);
   font-weight: 500;
-  &[data-variant='primary'],
-  &[aria-pressed='true'] {
-    @apply border-fg bg-fg text-ground;
+  white-space: nowrap;
+  color: var(--sg-fg);
+  cursor: pointer;
+  &:not(:disabled):hover {
+    border-color: var(--sg-fg);
+  }
+  &:is([data-variant='primary'], [aria-pressed='true']) {
+    border-color: var(--sg-fg);
+    background: var(--sg-fg);
+    color: var(--sg-ground);
   }
   &[data-variant='ghost']:not([aria-pressed]) {
-    @apply border-transparent px-2 text-dim hover:text-fg focus-visible:text-fg;
+    border-color: transparent;
+    padding: 0 8px;
+    color: var(--sg-dim);
+  }
+  &[data-variant='ghost']:not([aria-pressed], :disabled):is(:hover, :focus-visible) {
+    color: var(--sg-fg);
   }
   &[data-size='small'] {
-    @apply min-h-8 px-3 text-small;
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: var(--sg-small);
+  }
+  /* after the variants, so a disabled primary or pressed button reads as disabled */
+  &:disabled {
+    cursor: default;
+    color: var(--sg-dim);
+  }
+  &:disabled:not([data-variant='ghost']) {
+    border-color: var(--sg-rule);
+    background: none;
   }
 }
 @utility sg-field {
-  @apply flex w-full min-w-0 flex-col gap-2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 @utility sg-field-box {
-  @apply flex min-h-11 w-full items-center gap-0.5 rounded-ctl border border-ghost px-3.5 focus-within:border-fg;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--sg-ghost);
+  border-radius: var(--sg-radius);
+  &:focus-within,
   &[data-invalid] {
     border-color: var(--sg-fg);
   }
+  /* the ring, not the border, shows focus: an invalid field already has a bright border */
+  &:focus-within {
+    outline: 1px solid var(--sg-fg);
+    outline-offset: 2px;
+  }
 }
 @utility sg-field-in {
-  @apply flex-1 self-stretch bg-transparent text-body text-fg outline-hidden placeholder:text-dim disabled:text-dim;
+  flex: 1;
+  align-self: stretch;
+  background: none;
+  font-size: var(--sg-body);
+  color: var(--sg-fg);
+  outline: none;
+  &::placeholder,
+  &:disabled {
+    color: var(--sg-dim);
+  }
 }
 @utility sg-th {
   @apply border-b border-rule pb-2 text-label font-normal text-dim;

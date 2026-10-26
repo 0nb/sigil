@@ -99,7 +99,7 @@
         <Field name="off" label="disabled" value="read only" disabled />
       </div>
       <div class="flex flex-wrap items-center gap-3">
-        <Button type="button" variant="primary">save</Button><Button type="button">cancel</Button><Button type="button" variant="ghost">stats</Button><Button type="button" size="small">copy</Button><Button type="button" disabled>fold</Button><a href="#components" class="sg-btn" data-variant="ghost">link</a>
+        <Button type="button" variant="primary">save</Button><Button type="button">cancel</Button><Button type="button" variant="ghost">stats</Button><Button type="button" size="small">copy</Button><Button type="button" variant="primary" disabled>sending</Button><a href="#components" class="sg-btn" data-variant="ghost">link</a>
         <Check name="private" label="private" />
       </div>
       <div class="max-w-xs"><Field name="find" label="search" type="search" labelHidden placeholder="search your links" /></div>

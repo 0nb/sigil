@@ -54,6 +54,31 @@ test('keyboard focus on a button is outlined', async ({ page }) => {
   expect(await fold.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('solid');
 });
 
+test('a disabled primary button looks disabled', async ({ page }) => {
+  await page.goto('/');
+  const b = page.getByRole('button', { name: 'sending' });
+  await b.hover({ force: true });
+  expect(await b.evaluate((el) => [getComputedStyle(el).backgroundColor, getComputedStyle(el).color])).toEqual([
+    'rgba(0, 0, 0, 0)',
+    'rgb(138, 138, 138)',
+  ]);
+});
+
+test('an invalid field still shows focus', async ({ page }) => {
+  await page.goto('/');
+  const input = page.getByLabel('bad link');
+  const box = (/** @type {Element} */ el) => getComputedStyle(/** @type {HTMLElement} */ (el.parentElement)).outlineStyle;
+  expect(await input.evaluate(box)).toBe('none');
+  await input.focus();
+  expect(await input.evaluate(box)).toBe('solid');
+});
+
+test('the grid sits behind the content', async ({ page }) => {
+  await page.goto('/');
+  const z = await page.locator('main[data-grid]').evaluate((el) => getComputedStyle(el, '::before').zIndex);
+  expect(z).toBe('-1');
+});
+
 test('buttons carry no bracket decorations', async ({ page }) => {
   await page.goto('/');
   const content = await page
