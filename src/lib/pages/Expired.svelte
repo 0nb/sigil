@@ -8,7 +8,7 @@
 <div class='sg-shell min-h-dvh' data-left={tags?.left} data-right={tags?.right}><div class='sg-gutter' data-grid>
   <main aria-labelledby="sg-page-title" class="flex min-h-dvh flex-col items-center justify-center gap-6 text-center">
     <Sigil size={64} class="text-dim" />
-    <h1 id="sg-page-title" class="text-body font-normal">this link has expired.</h1>
+    <h1 id="sg-page-title" class="text-title font-semibold">this link has expired.</h1>
     <a href={home} class="sg-btn">home</a>
   </main>
 </div></div>
