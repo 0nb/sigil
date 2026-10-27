@@ -1,5 +1,12 @@
 # changelog
 
+## [0.6.0](https://github.com/0nb/sigil/compare/v0.5.0...v0.6.0) (2026-10-27)
+
+
+### features
+
+* chip, choice, tiles, bars, flap; nav beside the name ([#11](https://github.com/0nb/sigil/issues/11)) ([d8e3fd4](https://github.com/0nb/sigil/commit/d8e3fd46aa6e857eb4be65cf213d6aef3ed9c705))
+
 ## [0.5.0](https://github.com/0nb/sigil/compare/v0.4.0...v0.5.0) (2026-10-26)
 
 
