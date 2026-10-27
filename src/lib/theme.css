@@ -206,6 +206,26 @@
     @apply flex min-w-0 flex-[1_1_9rem] flex-col gap-1.5 bg-card p-4 sm:p-5;
   }
 }
+@utility sg-bars {
+  & ul {
+    @apply grid gap-2.5;
+  }
+  & li {
+    @apply grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 text-small;
+  }
+  & li > span:first-child {
+    @apply truncate;
+  }
+  & li > span:nth-child(2) {
+    @apply text-dim tabular-nums;
+  }
+  & li > [aria-hidden] {
+    @apply col-span-2 h-0.5 bg-rule;
+  }
+  & li > [aria-hidden] > i {
+    @apply block h-full bg-fg;
+  }
+}
 @utility sg-chip {
   @apply inline-flex max-w-full items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
 }

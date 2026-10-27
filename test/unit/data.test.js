@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Readout from '../../src/lib/components/Readout.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
 import Chip from '../../src/lib/components/Chip.svelte';
 import Tiles from '../../src/lib/components/Tiles.svelte';
+import Bars from '../../src/lib/components/Bars.svelte';
 import { snip } from '../helpers.js';
 
 const user = userEvent.setup();
@@ -95,4 +96,26 @@ test('Tiles are a description list, each value right after its name', () => {
   expect(screen.getByText('37')).toHaveClass('text-dim');
   expect(screen.getByText('128')).not.toHaveClass('text-dim');
   expect(screen.getByText('the last 7 days').tagName).toBe('DD');
+});
+
+test('Bars rank names with numbers and a share-of-total bar', () => {
+  const { container } = render(Bars, {
+    props: { label: 'countries', items: [{ key: 'belgium', n: 3 }, { key: 'france', n: 1 }] },
+  });
+  const list = screen.getByRole('list', { name: 'countries' });
+  expect(within(list).getAllByRole('listitem')[0]).toHaveTextContent(/belgium\s*3/);
+  const fills = [...container.querySelectorAll('[aria-hidden="true"] i')].map((i) => /** @type {HTMLElement} */ (i).style.width);
+  expect(fills).toEqual(['75%', '25%']);
+});
+
+test('Bars in percent', () => {
+  render(Bars, { props: { label: 'c', percent: true, items: [{ key: 'a', n: 1 }, { key: 'b', n: 2 }] } });
+  expect(screen.getByText('67%')).toBeInTheDocument();
+  expect(screen.getByText('33%')).toBeInTheDocument();
+});
+
+test('Bars with nothing render nothing; all zeros never say NaN', () => {
+  expect(render(Bars, { props: { label: 'c', items: [] } }).container.querySelector('figure')).toBeNull();
+  const { container } = render(Bars, { props: { label: 'z', percent: true, items: [{ key: 'a', n: 0 }] } });
+  expect(container.innerHTML).not.toContain('NaN');
 });

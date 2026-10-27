@@ -3,6 +3,7 @@ import { snip } from '../helpers.js';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
 import Chip from '../../src/lib/components/Chip.svelte';
+import Bars from '../../src/lib/components/Bars.svelte';
 
 test('Ls escapes untrusted text and renders without scripts', () => {
   const body = render(Ls, {
@@ -33,4 +34,8 @@ test('Ls keeps tooltips for plain cells and none for snippet cells', () => {
 
 test('Chip escapes its text', () => {
   expect(render(Chip, { props: { text: '<b>x</b>' } }).body).toContain('&lt;b>');
+});
+
+test('Bars escape names', () => {
+  expect(render(Bars, { props: { label: 'c', items: [{ key: '<i>x</i>', n: 1 }] } }).body).toContain('&lt;i>');
 });
