@@ -6,6 +6,7 @@ export { default as Empty } from './components/Empty.svelte';
 export { default as Field } from './components/Field.svelte';
 export { default as Button } from './components/Button.svelte';
 export { default as Check } from './components/Check.svelte';
+export { default as Choice } from './components/Choice.svelte';
 export { default as Confirm } from './components/Confirm.svelte';
 export { default as Ls } from './components/Ls.svelte';
 export { default as Readout } from './components/Readout.svelte';
