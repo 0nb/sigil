@@ -2,6 +2,7 @@ import { render } from 'svelte/server';
 import { snip } from '../helpers.js';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
+import Chip from '../../src/lib/components/Chip.svelte';
 
 test('Ls escapes untrusted text and renders without scripts', () => {
   const body = render(Ls, {
@@ -28,4 +29,8 @@ test('Ls keeps tooltips for plain cells and none for snippet cells', () => {
   }).body;
   expect(body).toContain('title="1284"');
   expect(body).not.toMatch(/title="[^"]*GMT/);
+});
+
+test('Chip escapes its text', () => {
+  expect(render(Chip, { props: { text: '<b>x</b>' } }).body).toContain('&lt;b>');
 });

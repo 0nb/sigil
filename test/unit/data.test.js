@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Readout from '../../src/lib/components/Readout.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
+import Chip from '../../src/lib/components/Chip.svelte';
 import { snip } from '../helpers.js';
 
 const user = userEvent.setup();
@@ -62,4 +63,18 @@ test('rows are not focus traps; links in cells are the way in', () => {
 test('Pager takes a label so two pagers stay distinct', () => {
   render(Pager, { props: { page: 1, pages: 3, label: 'links pages' } });
   expect(screen.getByRole('navigation', { name: 'links pages' })).toBeInTheDocument();
+});
+
+test('Chip shows its text, keeps it in title, and truncates', () => {
+  const long = 'note '.repeat(60).trim();
+  render(Chip, { props: { text: long } });
+  const chip = screen.getByTitle(long);
+  expect(chip).toHaveClass('sg-chip');
+  expect(chip).toHaveTextContent(long);
+  expect(chip.querySelector('svg')).toBeNull();
+});
+
+test('Chip with lock shows a decorative lock', () => {
+  render(Chip, { props: { text: 'password', lock: true } });
+  expect(screen.getByTitle('password').querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
 });

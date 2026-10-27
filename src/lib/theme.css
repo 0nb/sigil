@@ -191,6 +191,9 @@
 @utility sg-card {
   @apply rounded-card border border-rule bg-card p-4 sm:p-5;
 }
+@utility sg-chip {
+  @apply inline-flex max-w-full items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
+}
 @utility sg-sigil {
   display: inline-block;
   width: 18px;
