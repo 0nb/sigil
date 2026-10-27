@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { snip } from '../helpers.js';
 import Field from '../../src/lib/components/Field.svelte';
 import * as sigil from '../../src/lib/index.js';
 import Button from '../../src/lib/components/Button.svelte';
 import Check from '../../src/lib/components/Check.svelte';
+import Choice from '../../src/lib/components/Choice.svelte';
 
 const user = userEvent.setup();
 
@@ -121,4 +122,25 @@ test('Button without pressed is a plain button', () => {
 test('Button label names a symbol-only button', () => {
   render(Button, { props: { type: 'button', variant: 'ghost', label: 'more for fld.0nb.dev/x7kq2mp', children: snip('<span>⋯</span>') } });
   expect(screen.getByRole('button', { name: 'more for fld.0nb.dev/x7kq2mp' })).toBeInTheDocument();
+});
+
+const periods = [
+  { value: '24h', label: '24h' },
+  { value: '7d', label: '7 days' },
+];
+
+test('Choice presses one option and reports changes', async () => {
+  const onchange = vi.fn();
+  render(Choice, { props: { label: 'period', options: periods, value: '7d', onchange } });
+  const group = screen.getByRole('group', { name: 'period' });
+  expect(within(group).getByRole('button', { name: '7 days' })).toHaveAttribute('aria-pressed', 'true');
+  await userEvent.setup().click(within(group).getByRole('button', { name: '24h' }));
+  expect(onchange).toHaveBeenCalledWith('24h');
+  expect(within(group).getByRole('button', { name: '24h' })).toHaveAttribute('aria-pressed', 'true');
+  expect(within(group).getByRole('button', { name: '7 days' })).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('Choice with an unknown value presses nothing', () => {
+  render(Choice, { props: { label: 'period', options: periods, value: 'nope' } });
+  expect(screen.getAllByRole('button').filter((b) => b.getAttribute('aria-pressed') === 'true')).toHaveLength(0);
 });

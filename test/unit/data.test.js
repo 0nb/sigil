@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, within } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import Ls from '../../src/lib/components/Ls.svelte';
 import Readout from '../../src/lib/components/Readout.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
+import Chip from '../../src/lib/components/Chip.svelte';
+import Tiles from '../../src/lib/components/Tiles.svelte';
+import Bars from '../../src/lib/components/Bars.svelte';
 import { snip } from '../helpers.js';
 
 const user = userEvent.setup();
@@ -62,4 +65,65 @@ test('rows are not focus traps; links in cells are the way in', () => {
 test('Pager takes a label so two pagers stay distinct', () => {
   render(Pager, { props: { page: 1, pages: 3, label: 'links pages' } });
   expect(screen.getByRole('navigation', { name: 'links pages' })).toBeInTheDocument();
+});
+
+test('Chip shows its text, keeps it in title, and truncates', () => {
+  const long = 'note '.repeat(60).trim();
+  render(Chip, { props: { text: long } });
+  const chip = screen.getByTitle(long);
+  expect(chip).toHaveClass('sg-chip');
+  expect(chip).toHaveTextContent(long);
+  expect(chip.querySelector('svg')).toBeNull();
+});
+
+test('Chip with lock shows a decorative lock', () => {
+  render(Chip, { props: { text: 'password', lock: true } });
+  expect(screen.getByTitle('password').querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('Tiles are a description list, each value right after its name', () => {
+  render(Tiles, {
+    props: {
+      items: [
+        { key: 'people', value: 128, hint: 'the last 7 days' },
+        { key: 'link previews', value: 37, dim: true },
+      ],
+    },
+  });
+  const dt = screen.getByText('people');
+  expect(dt.tagName).toBe('DT');
+  expect(dt.nextElementSibling).toHaveTextContent('128');
+  expect(screen.getByText('37')).toHaveClass('text-dim');
+  expect(screen.getByText('128')).not.toHaveClass('text-dim');
+  expect(screen.getByText('the last 7 days').tagName).toBe('DD');
+});
+
+test('Bars rank names with numbers and a share-of-total bar', () => {
+  const { container } = render(Bars, {
+    props: { label: 'countries', items: [{ key: 'belgium', n: 3 }, { key: 'france', n: 1 }] },
+  });
+  const list = screen.getByRole('list', { name: 'countries' });
+  expect(within(list).getAllByRole('listitem')[0]).toHaveTextContent(/belgium\s*3/);
+  const fills = [...container.querySelectorAll('[aria-hidden="true"] i')].map((i) => /** @type {HTMLElement} */ (i).style.width);
+  expect(fills).toEqual(['75%', '25%']);
+});
+
+test('Bars in percent', () => {
+  render(Bars, { props: { label: 'c', percent: true, items: [{ key: 'a', n: 1 }, { key: 'b', n: 2 }] } });
+  expect(screen.getByText('67%')).toBeInTheDocument();
+  expect(screen.getByText('33%')).toBeInTheDocument();
+});
+
+test('Bars with nothing render nothing; all zeros never say NaN', () => {
+  expect(render(Bars, { props: { label: 'c', items: [] } }).container.querySelector('figure')).toBeNull();
+  const { container } = render(Bars, { props: { label: 'z', percent: true, items: [{ key: 'a', n: 0 }] } });
+  expect(container.innerHTML).not.toContain('NaN');
+});
+
+test('Bars and Tiles take repeated names (several unknown countries) without breaking', () => {
+  const items = [{ key: 'unknown', n: 2 }, { key: 'unknown', n: 1 }];
+  render(Bars, { props: { label: 'countries', items } });
+  expect(within(screen.getByRole('list', { name: 'countries' })).getAllByRole('listitem')).toHaveLength(2);
+  render(Tiles, { props: { items: [{ key: 'people', value: 1 }, { key: 'people', value: 2 }] } });
+  expect(screen.getAllByText('people')).toHaveLength(2);
 });

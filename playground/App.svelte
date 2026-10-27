@@ -1,7 +1,7 @@
 <script>
   import {
     Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
-    Ls, Readout, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
+    Ls, Readout, Tiles, Bars, Chip, Choice, Pager, Flap, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
@@ -57,6 +57,7 @@
   let answered = $state('');
   let horizon = $state(false);
   let range = $state('24h');
+  let period = $state('7d');
   const brand = brandSvgs({ left: '0nb', right: 'est. 2023' });
 </script>
 
@@ -115,12 +116,28 @@
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
+      <div class="max-w-md rounded-card border border-rule bg-card">
+        <Flap label="example: a long link folded into fld.0nb.dev/merino">
+          {#snippet before()}<p class="flex h-full flex-col justify-center gap-2 px-5"><span class="text-label text-dim">the long one</span><span class="font-mono text-[13px] break-all text-dim">https://shop.example.com/collections/autumn-2026/products/merino-crew-sweater?variant=44718</span></p>{/snippet}
+          {#snippet after()}<p class="flex h-full flex-col justify-center gap-2 px-5"><span class="text-label text-dim">your short link</span><span class="font-mono text-[24px]"><span class="text-dim">fld.0nb.dev/</span>merino</span></p>{/snippet}
+        </Flap>
+      </div>
+      <Tiles items={[{ key: 'people', value: 128, hint: 'the last 7 days' }, { key: 'busiest day', value: 40, hint: 'friday' }, { key: 'link previews', value: 37, hint: 'not counted as people', dim: true }]} />
+      <Tiles items={[{ key: 'links', value: 4 }, { key: 'people', value: 214 }, { key: 'countries', value: 12 }, { key: 'previews', value: 51, dim: true }]} />
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
       <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} label="last page" /></div>
       <div role="group" aria-label="range" class="flex flex-wrap gap-4">
         {#each ['24h', '7d', '30d', 'all'] as r (r)}<Button type="button" pressed={range === r} onclick={() => (range = r)}>{r}</Button>{/each}
       </div>
       <Scope points={pts} label="clicks, last 7 days" />
+      <Scope points={pts} label="people per day" area />
+      <Choice label="period" options={[{ value: '24h', label: '24h' }, { value: '7d', label: '7 days' }, { value: '30d', label: '30 days' }, { value: 'all', label: 'all' }]} bind:value={period} />
+      <div id="chips-nowrap" class="flex w-[300px] gap-1.5"><Chip text="password" lock /><Chip text={'a note that will not wrap '.repeat(12)} /></div>
+      <div class="flex max-w-[200px] flex-wrap gap-1.5"><Chip text="password" lock /><Chip text="ends jan 31 2027" /><Chip text={'a very long note that has to truncate inside a narrow row '.repeat(5)} /></div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <Card><Bars label="countries" items={[{ key: 'belgium', n: 53 }, { key: 'netherlands', n: 28 }, { key: 'france', n: 15 }, { key: 'united states', n: 11 }]} /></Card>
+        <Card><Bars label="countries, share" percent items={[{ key: 'belgium', n: 53 }, { key: 'netherlands', n: 28 }, { key: 'france', n: 15 }]} /></Card>
+      </div>
       <div class="grid gap-6 sm:grid-cols-2"><Scope points={[]} label="clicks" height={100} /><Scope points={[pts[0]]} label="clicks" height={100} /></div>
       <p class="text-small">trend <Spark values={[3, 9, 4, 12, 30, 22, 41]} /></p>
       <Code code="curl -X POST https://fld.0nb.dev/api/v2/links -d url=https://0nb.dev" />

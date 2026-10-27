@@ -34,6 +34,39 @@
   --radius-card: var(--sg-radius-card);
 }
 
+/* keyframes in @theme reach a build's css only when its sources use them. the flap plays once, under
+   5 s, and rests on "after": nothing on a page moves for longer (wcag 2.2.2) */
+@theme {
+  --animate-sg-flap: sg-flap 3.2s cubic-bezier(0.7, 0, 0.3, 1) 0.4s 1 both;
+  --animate-sg-rise: sg-rise 3.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s 1 both;
+  @keyframes sg-flap {
+    0%,
+    35% {
+      transform: rotateX(0);
+      opacity: 1;
+      filter: brightness(1);
+    }
+    60%,
+    100% {
+      transform: rotateX(-88deg);
+      opacity: 0;
+      filter: brightness(0.3);
+    }
+  }
+  @keyframes sg-rise {
+    0%,
+    45% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    70%,
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 @layer base {
   html {
     background: var(--sg-ground);
@@ -190,6 +223,54 @@
 }
 @utility sg-card {
   @apply rounded-card border border-rule bg-card p-4 sm:p-5;
+}
+@utility sg-choice {
+  @apply inline-flex w-fit max-w-full flex-wrap gap-0.5 rounded-ctl border border-rule p-[3px];
+  & > button {
+    @apply min-h-[30px] cursor-pointer rounded-[4px] px-3 text-small text-dim hover:text-fg;
+  }
+  & > button[aria-pressed='true'] {
+    @apply bg-fg text-ground;
+  }
+}
+@utility sg-tiles {
+  @apply flex flex-wrap gap-px overflow-hidden rounded-card border border-rule bg-rule;
+  & > div {
+    @apply flex min-w-0 flex-[1_1_9rem] flex-col gap-1.5 bg-card p-4 sm:p-5;
+  }
+}
+@utility sg-bars {
+  & ul {
+    @apply grid gap-2.5;
+  }
+  & li {
+    @apply grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1 text-small;
+  }
+  & li > span:first-child {
+    @apply truncate;
+  }
+  & li > span:nth-child(2) {
+    @apply text-dim tabular-nums;
+  }
+  & li > [aria-hidden] {
+    @apply col-span-2 h-0.5 bg-rule;
+  }
+  & li > [aria-hidden] > i {
+    @apply block h-full bg-fg;
+  }
+}
+@utility sg-flap {
+  @apply relative overflow-hidden;
+  perspective: 700px;
+}
+@utility sg-flap-before {
+  @apply absolute inset-0 origin-top bg-card animate-sg-flap motion-reduce:hidden;
+}
+@utility sg-flap-after {
+  @apply absolute inset-0 animate-sg-rise motion-reduce:animate-none;
+}
+@utility sg-chip {
+  @apply inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
 }
 @utility sg-sigil {
   display: inline-block;

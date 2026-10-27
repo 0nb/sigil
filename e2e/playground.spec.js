@@ -140,3 +140,59 @@ test('each page passes axe as a standalone document', async ({ page }) => {
     expect((await new AxeBuilder({ page }).analyze()).violations.map((v) => v.id)).toEqual([]);
   }
 });
+
+test('Tiles rows fill on narrow screens', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto('/');
+  const all = await page.locator('.sg-tiles').all();
+  expect(all.length).toBeGreaterThan(1);
+  for (const tiles of all) {
+    // every row reaches the frame's right edge: no rule-coloured gap left over
+    const gaps = await tiles.evaluate((frame) => {
+      const inner = frame.getBoundingClientRect().right - parseFloat(getComputedStyle(frame).borderRightWidth);
+      const rows = new Map();
+      for (const cell of frame.children) {
+        const r = cell.getBoundingClientRect();
+        const top = Math.round(r.top);
+        rows.set(top, Math.max(rows.get(top) ?? 0, r.right));
+      }
+      return [...rows.values()].map((right) => Math.round(inner - right));
+    });
+    for (const gap of gaps) expect(gap).toBe(0);
+  }
+});
+
+test('reduced motion shows only the short side of a flap, still', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const flap = page.locator('.sg-flap').first();
+  await expect(flap.locator('.sg-flap-before')).toBeHidden();
+  await expect(flap.locator('.sg-flap-after')).toBeVisible();
+  expect(await flap.locator('.sg-flap-after').evaluate((e) => getComputedStyle(e).animationName)).toBe('none');
+});
+
+test('with motion, a flap folds', async ({ page }) => {
+  await page.goto('/');
+  const flap = page.locator('.sg-flap').first();
+  expect(await flap.locator('.sg-flap-before').evaluate((e) => getComputedStyle(e).animationName)).toBe('sg-flap');
+});
+
+test('chips truncate inside a row that does not wrap', async ({ page }) => {
+  await page.goto('/');
+  const row = page.locator('#chips-nowrap');
+  const [scroll, client] = await row.evaluate((e) => [e.scrollWidth, e.clientWidth]);
+  expect(scroll).toBeLessThanOrEqual(client);
+});
+
+test('a flap folds once, within five seconds, and rests on the short side', async ({ page }) => {
+  await page.goto('/');
+  for (const panel of ['.sg-flap-before', '.sg-flap-after']) {
+    const s = await page.locator(panel).first().evaluate((e) => {
+      const cs = getComputedStyle(e);
+      return { count: cs.animationIterationCount, total: parseFloat(cs.animationDuration) + parseFloat(cs.animationDelay), fill: cs.animationFillMode };
+    });
+    expect(s.count).toBe('1');
+    expect(s.total).toBeLessThanOrEqual(5);
+    expect(s.fill).toBe('both');
+  }
+});

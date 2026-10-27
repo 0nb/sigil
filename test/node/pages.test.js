@@ -41,3 +41,7 @@ test('the pages css styles the field and the button', () => {
   expect(css).toContain('.sg-field-box');
   expect(css).toContain('.sg-btn');
 });
+
+test('the pages css carries none of the dashboard and homepage pieces', () => {
+  for (const piece of ['sg-flap', 'sg-tiles', 'sg-bars', 'sg-chip', 'sg-choice']) expect(css).not.toContain(piece);
+});

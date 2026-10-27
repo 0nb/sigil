@@ -51,6 +51,22 @@ test('Shell is a top bar: home, tabs, account; then main', () => {
   expect(container.querySelector('[data-grid]')).not.toBeNull();
 });
 
+test('Shell puts the nav beside the name and the account at the end', () => {
+  const { container } = render(Shell, {
+    props: {
+      name: 'fold',
+      nav: [{ href: '/', label: 'links', current: true }],
+      account: snip('<span>me</span>'),
+      children: snip('<p>x</p>'),
+    },
+  });
+  const header = /** @type {HTMLElement} */ (container.querySelector('header'));
+  const left = /** @type {HTMLElement} */ (header.firstElementChild);
+  expect(left).toContainElement(screen.getByRole('link', { name: 'fold' }));
+  expect(left).toContainElement(screen.getByRole('navigation', { name: 'main' }));
+  expect(header.lastElementChild).toHaveTextContent('me');
+});
+
 test('Shell without grid paints none', () => {
   const { container } = render(Shell, { props: { name: 'fold', children: snip('<p>x</p>') } });
   expect(container.querySelector('[data-grid]')).toBeNull();
