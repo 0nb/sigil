@@ -161,3 +161,18 @@ test('Tiles rows fill on narrow screens', async ({ page }) => {
     for (const gap of gaps) expect(gap).toBe(0);
   }
 });
+
+test('reduced motion shows only the short side of a flap, still', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const flap = page.locator('.sg-flap').first();
+  await expect(flap.locator('.sg-flap-before')).toBeHidden();
+  await expect(flap.locator('.sg-flap-after')).toBeVisible();
+  expect(await flap.locator('.sg-flap-after').evaluate((e) => getComputedStyle(e).animationName)).toBe('none');
+});
+
+test('with motion, a flap folds', async ({ page }) => {
+  await page.goto('/');
+  const flap = page.locator('.sg-flap').first();
+  expect(await flap.locator('.sg-flap-before').evaluate((e) => getComputedStyle(e).animationName)).toBe('sg-flap');
+});

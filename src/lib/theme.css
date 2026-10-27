@@ -34,6 +34,48 @@
   --radius-card: var(--sg-radius-card);
 }
 
+/* keyframes in @theme ship only to pages that use them */
+@theme {
+  --animate-sg-flap: sg-flap 9s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+  --animate-sg-rise: sg-rise 9s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+  @keyframes sg-flap {
+    0%,
+    30% {
+      transform: rotateX(0);
+      opacity: 1;
+      filter: brightness(1);
+    }
+    44%,
+    88% {
+      transform: rotateX(-88deg);
+      opacity: 0;
+      filter: brightness(0.3);
+    }
+    100% {
+      transform: rotateX(0);
+      opacity: 1;
+      filter: brightness(1);
+    }
+  }
+  @keyframes sg-rise {
+    0%,
+    38% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    50%,
+    86% {
+      opacity: 1;
+      transform: none;
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+}
+
 @layer base {
   html {
     background: var(--sg-ground);
@@ -225,6 +267,16 @@
   & li > [aria-hidden] > i {
     @apply block h-full bg-fg;
   }
+}
+@utility sg-flap {
+  @apply relative overflow-hidden;
+  perspective: 700px;
+}
+@utility sg-flap-before {
+  @apply absolute inset-0 origin-top bg-card animate-sg-flap motion-reduce:hidden;
+}
+@utility sg-flap-after {
+  @apply absolute inset-0 animate-sg-rise motion-reduce:animate-none;
 }
 @utility sg-chip {
   @apply inline-flex max-w-full items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;

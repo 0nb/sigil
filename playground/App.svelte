@@ -1,7 +1,7 @@
 <script>
   import {
     Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
-    Ls, Readout, Tiles, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
+    Ls, Readout, Tiles, Pager, Flap, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
@@ -115,6 +115,12 @@
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
+      <div class="max-w-md rounded-card border border-rule bg-card">
+        <Flap label="example: a long link folded into fld.0nb.dev/merino">
+          {#snippet before()}<p class="flex h-full flex-col justify-center gap-2 px-5"><span class="text-label text-dim">the long one</span><span class="font-mono text-[13px] break-all text-dim">https://shop.example.com/collections/autumn-2026/products/merino-crew-sweater?variant=44718</span></p>{/snippet}
+          {#snippet after()}<p class="flex h-full flex-col justify-center gap-2 px-5"><span class="text-label text-dim">your short link</span><span class="font-mono text-[24px]"><span class="text-dim">fld.0nb.dev/</span>merino</span></p>{/snippet}
+        </Flap>
+      </div>
       <Tiles items={[{ key: 'people', value: 128, hint: 'the last 7 days' }, { key: 'busiest day', value: 40, hint: 'friday' }, { key: 'link previews', value: 37, hint: 'not counted as people', dim: true }]} />
       <Tiles items={[{ key: 'links', value: 4 }, { key: 'people', value: 214 }, { key: 'countries', value: 12 }, { key: 'previews', value: 51, dim: true }]} />
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
