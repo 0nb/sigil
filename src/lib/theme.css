@@ -200,6 +200,12 @@
     @apply bg-fg text-ground;
   }
 }
+@utility sg-tiles {
+  @apply flex flex-wrap gap-px overflow-hidden rounded-card border border-rule bg-rule;
+  & > div {
+    @apply flex min-w-0 flex-[1_1_9rem] flex-col gap-1.5 bg-card p-4 sm:p-5;
+  }
+}
 @utility sg-chip {
   @apply inline-flex max-w-full items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
 }

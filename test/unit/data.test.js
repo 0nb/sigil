@@ -4,6 +4,7 @@ import Ls from '../../src/lib/components/Ls.svelte';
 import Readout from '../../src/lib/components/Readout.svelte';
 import Pager from '../../src/lib/components/Pager.svelte';
 import Chip from '../../src/lib/components/Chip.svelte';
+import Tiles from '../../src/lib/components/Tiles.svelte';
 import { snip } from '../helpers.js';
 
 const user = userEvent.setup();
@@ -77,4 +78,21 @@ test('Chip shows its text, keeps it in title, and truncates', () => {
 test('Chip with lock shows a decorative lock', () => {
   render(Chip, { props: { text: 'password', lock: true } });
   expect(screen.getByTitle('password').querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('Tiles are a description list, each value right after its name', () => {
+  render(Tiles, {
+    props: {
+      items: [
+        { key: 'people', value: 128, hint: 'the last 7 days' },
+        { key: 'link previews', value: 37, dim: true },
+      ],
+    },
+  });
+  const dt = screen.getByText('people');
+  expect(dt.tagName).toBe('DT');
+  expect(dt.nextElementSibling).toHaveTextContent('128');
+  expect(screen.getByText('37')).toHaveClass('text-dim');
+  expect(screen.getByText('128')).not.toHaveClass('text-dim');
+  expect(screen.getByText('the last 7 days').tagName).toBe('DD');
 });

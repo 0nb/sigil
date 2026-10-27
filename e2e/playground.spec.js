@@ -140,3 +140,24 @@ test('each page passes axe as a standalone document', async ({ page }) => {
     expect((await new AxeBuilder({ page }).analyze()).violations.map((v) => v.id)).toEqual([]);
   }
 });
+
+test('Tiles rows fill on narrow screens', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto('/');
+  const all = await page.locator('.sg-tiles').all();
+  expect(all.length).toBeGreaterThan(1);
+  for (const tiles of all) {
+    // every row reaches the frame's right edge: no rule-coloured gap left over
+    const gaps = await tiles.evaluate((frame) => {
+      const inner = frame.getBoundingClientRect().right - parseFloat(getComputedStyle(frame).borderRightWidth);
+      const rows = new Map();
+      for (const cell of frame.children) {
+        const r = cell.getBoundingClientRect();
+        const top = Math.round(r.top);
+        rows.set(top, Math.max(rows.get(top) ?? 0, r.right));
+      }
+      return [...rows.values()].map((right) => Math.round(inner - right));
+    });
+    for (const gap of gaps) expect(gap).toBe(0);
+  }
+});

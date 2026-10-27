@@ -1,7 +1,7 @@
 <script>
   import {
     Sigil, Line, Status, Spinner, Empty, Field, Button, Check, Confirm,
-    Ls, Readout, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
+    Ls, Readout, Tiles, Pager, Scope, Spark, Shell, Card, Code, Horizon, NotFound, Expired, Locked,
   } from '../src/lib/index.js';
   import { brandSvgs } from '../scripts/brand-svgs.js';
   import pkg from '../package.json';
@@ -115,6 +115,8 @@
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>
+      <Tiles items={[{ key: 'people', value: 128, hint: 'the last 7 days' }, { key: 'busiest day', value: 40, hint: 'friday' }, { key: 'link previews', value: 37, hint: 'not counted as people', dim: true }]} />
+      <Tiles items={[{ key: 'links', value: 4 }, { key: 'people', value: 214 }, { key: 'countries', value: 12 }, { key: 'previews', value: 51, dim: true }]} />
       <Readout items={[{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d ago' }, { key: 'destination', value: 'github.com/0nb/sigil' }]} />
       <div class="flex flex-col gap-3"><Pager {page} pages={12} onpage={(p) => (page = p)} /><Pager page={3} pages={3} label="last page" /></div>
       <div role="group" aria-label="range" class="flex flex-wrap gap-4">
