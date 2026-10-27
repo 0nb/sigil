@@ -34,3 +34,12 @@ test('Scope labels keep their size at any width', () => {
   expect(body).toMatch(/preserveAspectRatio="none"/);
   expect(body).toMatch(/class="[^"]*text-tag/);
 });
+
+test.each([[[5]], [[0, 12, 3, 1284]]])('Scope fills under %j only when asked, without NaN', (vs) => {
+  const filled = (/** @type {string} */ body) => (body.match(/class="fill-fg"/g) ?? []).length;
+  const plain = render(Scope, { props: { points: pts(vs), label: 'c' } }).body;
+  const area = render(Scope, { props: { points: pts(vs), label: 'c', area: true } }).body;
+  expect(filled(plain)).toBe(0);
+  expect(filled(area)).toBe(1);
+  expect(area).not.toMatch(/NaN|Infinity/);
+});

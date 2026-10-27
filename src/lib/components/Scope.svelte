@@ -2,11 +2,12 @@
   import Empty from './Empty.svelte';
   import { linear, ticks, pathFrom } from '../util/scale.js';
 
-  /** @type {{ points: { t: number, v: number }[], label: string, height?: number, format?: (v: number) => string, formatT?: (t: number) => string }} */
+  /** @type {{ points: { t: number, v: number }[], label: string, height?: number, area?: boolean, format?: (v: number) => string, formatT?: (t: number) => string }} */
   let {
     points,
     label,
     height = 160,
+    area = false,
     format = String,
     formatT = (t) => new Date(t).toISOString().slice(5, 10),
   } = $props();
@@ -49,6 +50,7 @@
         {#each chart.yLines as line (line.v)}
           <path d="M0 {line.y}H1000" class="stroke-rule" stroke-width="1" vector-effect="non-scaling-stroke" />
         {/each}
+        {#if area}<path d="{chart.path}L{chart.end.x} 100L0 100Z" class="fill-fg" opacity="0.05" />{/if}
         <path d={chart.path} fill="none" class="stroke-fg" stroke-width="4" opacity="0.15" vector-effect="non-scaling-stroke" />
         <path d={chart.path} fill="none" class="stroke-fg" stroke-width="1" vector-effect="non-scaling-stroke" />
         <path d="M{chart.end.x} {chart.end.y}h0" class="stroke-fg" stroke-width="5" stroke-linecap="square" vector-effect="non-scaling-stroke" />
