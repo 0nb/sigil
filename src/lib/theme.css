@@ -234,7 +234,7 @@
   @apply rounded-card border border-rule bg-card p-4 sm:p-5;
 }
 @utility sg-choice {
-  @apply inline-flex flex-wrap gap-0.5 rounded-ctl border border-rule p-[3px];
+  @apply inline-flex w-fit max-w-full flex-wrap gap-0.5 rounded-ctl border border-rule p-[3px];
   & > button {
     @apply min-h-[30px] cursor-pointer rounded-[4px] px-3 text-small text-dim hover:text-fg;
   }
