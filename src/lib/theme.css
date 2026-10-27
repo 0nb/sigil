@@ -34,44 +34,35 @@
   --radius-card: var(--sg-radius-card);
 }
 
-/* keyframes in @theme ship only to pages that use them */
+/* keyframes in @theme reach a build's css only when its sources use them. the flap plays once, under
+   5 s, and rests on "after": nothing on a page moves for longer (wcag 2.2.2) */
 @theme {
-  --animate-sg-flap: sg-flap 9s cubic-bezier(0.7, 0, 0.3, 1) infinite;
-  --animate-sg-rise: sg-rise 9s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+  --animate-sg-flap: sg-flap 3.2s cubic-bezier(0.7, 0, 0.3, 1) 0.4s 1 both;
+  --animate-sg-rise: sg-rise 3.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s 1 both;
   @keyframes sg-flap {
     0%,
-    30% {
+    35% {
       transform: rotateX(0);
       opacity: 1;
       filter: brightness(1);
     }
-    44%,
-    88% {
+    60%,
+    100% {
       transform: rotateX(-88deg);
       opacity: 0;
       filter: brightness(0.3);
     }
-    100% {
-      transform: rotateX(0);
-      opacity: 1;
-      filter: brightness(1);
-    }
   }
   @keyframes sg-rise {
     0%,
-    38% {
+    45% {
       opacity: 0;
       transform: translateY(10px);
     }
-    50%,
-    86% {
+    70%,
+    100% {
       opacity: 1;
       transform: none;
-    }
-    96%,
-    100% {
-      opacity: 0;
-      transform: translateY(10px);
     }
   }
 }
@@ -279,7 +270,7 @@
   @apply absolute inset-0 animate-sg-rise motion-reduce:animate-none;
 }
 @utility sg-chip {
-  @apply inline-flex max-w-full items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
+  @apply inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
 }
 @utility sg-sigil {
   display: inline-block;

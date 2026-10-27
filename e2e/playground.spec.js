@@ -176,3 +176,23 @@ test('with motion, a flap folds', async ({ page }) => {
   const flap = page.locator('.sg-flap').first();
   expect(await flap.locator('.sg-flap-before').evaluate((e) => getComputedStyle(e).animationName)).toBe('sg-flap');
 });
+
+test('chips truncate inside a row that does not wrap', async ({ page }) => {
+  await page.goto('/');
+  const row = page.locator('#chips-nowrap');
+  const [scroll, client] = await row.evaluate((e) => [e.scrollWidth, e.clientWidth]);
+  expect(scroll).toBeLessThanOrEqual(client);
+});
+
+test('a flap folds once, within five seconds, and rests on the short side', async ({ page }) => {
+  await page.goto('/');
+  for (const panel of ['.sg-flap-before', '.sg-flap-after']) {
+    const s = await page.locator(panel).first().evaluate((e) => {
+      const cs = getComputedStyle(e);
+      return { count: cs.animationIterationCount, total: parseFloat(cs.animationDuration) + parseFloat(cs.animationDelay), fill: cs.animationFillMode };
+    });
+    expect(s.count).toBe('1');
+    expect(s.total).toBeLessThanOrEqual(5);
+    expect(s.fill).toBe('both');
+  }
+});

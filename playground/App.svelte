@@ -132,6 +132,7 @@
       <Scope points={pts} label="clicks, last 7 days" />
       <Scope points={pts} label="people per day" area />
       <Choice label="period" options={[{ value: '24h', label: '24h' }, { value: '7d', label: '7 days' }, { value: '30d', label: '30 days' }, { value: 'all', label: 'all' }]} bind:value={period} />
+      <div id="chips-nowrap" class="flex w-[300px] gap-1.5"><Chip text="password" lock /><Chip text={'a note that will not wrap '.repeat(12)} /></div>
       <div class="flex max-w-[200px] flex-wrap gap-1.5"><Chip text="password" lock /><Chip text="ends jan 31 2027" /><Chip text={'a very long note that has to truncate inside a narrow row '.repeat(5)} /></div>
       <div class="grid gap-4 sm:grid-cols-2">
         <Card><Bars label="countries" items={[{ key: 'belgium', n: 53 }, { key: 'netherlands', n: 28 }, { key: 'france', n: 15 }, { key: 'united states', n: 11 }]} /></Card>

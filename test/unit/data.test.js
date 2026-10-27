@@ -119,3 +119,11 @@ test('Bars with nothing render nothing; all zeros never say NaN', () => {
   const { container } = render(Bars, { props: { label: 'z', percent: true, items: [{ key: 'a', n: 0 }] } });
   expect(container.innerHTML).not.toContain('NaN');
 });
+
+test('Bars and Tiles take repeated names (several unknown countries) without breaking', () => {
+  const items = [{ key: 'unknown', n: 2 }, { key: 'unknown', n: 1 }];
+  render(Bars, { props: { label: 'countries', items } });
+  expect(within(screen.getByRole('list', { name: 'countries' })).getAllByRole('listitem')).toHaveLength(2);
+  render(Tiles, { props: { items: [{ key: 'people', value: 1 }, { key: 'people', value: 2 }] } });
+  expect(screen.getAllByText('people')).toHaveLength(2);
+});

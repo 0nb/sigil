@@ -11,7 +11,8 @@
   <figure class="sg-bars">
     <figcaption class="mb-3.5 text-small text-dim">{label}</figcaption>
     <ul aria-label={label}>
-      {#each items as item (item.key)}
+      <!-- unkeyed: names can repeat (several unknown countries) and the list is display-only -->
+      {#each items as item}
         <li>
           <span title={item.key}>{item.key}</span>
           <span>{percent ? `${Math.round(share(item.n))}%` : item.n}</span>

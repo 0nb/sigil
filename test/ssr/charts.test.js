@@ -43,3 +43,10 @@ test.each([[[5]], [[0, 12, 3, 1284]]])('Scope fills under %j only when asked, wi
   expect(filled(area)).toBe(1);
   expect(area).not.toMatch(/NaN|Infinity/);
 });
+
+test('Scope with all zeros lies on the floor, and its fill closes at the first point', () => {
+  const zeros = render(Scope, { props: { points: pts([0, 0, 0]), label: 'c', area: true } }).body;
+  expect(zeros).toContain('d="M0 100 L500 100 L1000 100"');
+  const one = render(Scope, { props: { points: pts([5]), label: 'c', area: true } }).body;
+  expect(one).not.toContain('L0 100Z');
+});
