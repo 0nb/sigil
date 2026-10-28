@@ -5,3 +5,4 @@ test/budget/.out
 playwright-report
 test-results
 test/pages/.out
+test/prose/.out

@@ -144,6 +144,16 @@
       <div><Button type="button" onclick={() => (horizon = !horizon)}>horizon {horizon ? 'off' : 'on'}</Button></div>
     </section>
 
+    <section id="prose">
+      {@render head('prose')}
+      <article class="sg-prose max-w-xl">
+        <p>reading pages, like terms or privacy. links in running text are <a class="sg-link" href="#prose">underlined</a>, so they never rely on colour alone.</p>
+        <h2>a heading</h2>
+        <p>a paragraph under it, with <code>fold_session</code> in code.</p>
+        <ul><li>a list item</li><li>another one</li></ul>
+      </article>
+    </section>
+
     <section id="dashboard" class="flex flex-col gap-6">
       {@render head('dashboard')}
       <form class="sg-card flex flex-col gap-4" onsubmit={(e) => e.preventDefault()}>
