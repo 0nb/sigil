@@ -272,6 +272,35 @@
 @utility sg-chip {
   @apply inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-[4px] border border-rule px-1.5 align-bottom text-tag whitespace-nowrap text-dim;
 }
+/* reading pages: plain paragraphs, headings and lists under one class */
+@utility sg-prose {
+  & > * + * {
+    @apply mt-4;
+  }
+  & > h2 {
+    @apply mt-10 text-title font-semibold;
+  }
+  & > h2 + * {
+    @apply mt-3;
+  }
+  & ul {
+    @apply flex flex-col gap-2;
+  }
+  & li {
+    @apply relative pl-5;
+  }
+  & li::before {
+    @apply absolute left-0 text-dim;
+    content: '–';
+  }
+  /* links in running text never rely on colour alone */
+  & a {
+    @apply underline underline-offset-2;
+  }
+  & code {
+    @apply font-mono text-[0.9em];
+  }
+}
 @utility sg-sigil {
   display: inline-block;
   width: 18px;
