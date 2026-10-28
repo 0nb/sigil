@@ -1,5 +1,12 @@
 # changelog
 
+## [0.7.0](https://github.com/0nb/sigil/compare/v0.6.0...v0.7.0) (2026-10-28)
+
+
+### features
+
+* sg-prose for reading pages ([#13](https://github.com/0nb/sigil/issues/13)) ([b7a3fde](https://github.com/0nb/sigil/commit/b7a3fde7de2f6d2a7f890d4a99faa7b3625f19ff))
+
 ## [0.6.0](https://github.com/0nb/sigil/compare/v0.5.0...v0.6.0) (2026-10-27)
 
 
