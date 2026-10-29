@@ -114,8 +114,8 @@
         {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete fld.0nb.dev/x7kq2mp?" onyes={() => (answered = "delete")} onno={() => (answered = "keep")} />{/if}
       </div>
       <Card as="section"><Ls caption="links" {columns} {rows} key={(r) => r.id} /></Card>
-      <Ls caption="api keys" rows={keys} key={(k) => k.id}
-        columns={[{ key: 'name', label: 'name' }, { key: 'used', label: 'last used', dim: true }, { key: 'id', label: 'revoke', align: 'right', action: true, cell: revoke }]} />
+      <div class="max-w-md"><Ls caption="api keys" rows={keys} key={(k) => k.id}
+        columns={[{ key: 'name', label: 'name' }, { key: 'used', label: 'last used', dim: true }, { key: 'id', label: 'revoke', align: 'right', action: true, cell: revoke }]} /></div>
       {#snippet revoke(/** @type {{ name: string }} */ k)}<Button type="button" variant="ghost" size="small" label="revoke {k.name}">revoke</Button>{/snippet}
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}

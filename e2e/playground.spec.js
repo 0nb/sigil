@@ -206,3 +206,9 @@ test('on a phone, a cell is labelled by its column, an action cell is not', asyn
   expect(await before(0)).toBe('"name"');
   expect(await before(2)).toBe('none');
 });
+
+test('an action column is as wide as its button: never clipped', async ({ page }) => {
+  await page.goto('/');
+  const action = page.locator('table:has(caption:text-is("api keys")) tbody tr').first().locator('td').last();
+  expect(await action.evaluate((td) => td.scrollWidth <= td.clientWidth)).toBe(true);
+});
