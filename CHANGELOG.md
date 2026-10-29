@@ -1,5 +1,12 @@
 # changelog
 
+## [0.8.0](https://github.com/0nb/sigil/compare/v0.7.0...v0.8.0) (2026-10-29)
+
+
+### features
+
+* Ls action columns ([#15](https://github.com/0nb/sigil/issues/15)) ([93ac563](https://github.com/0nb/sigil/commit/93ac563aa6fa1bdbcec83b8d5f43dcde4c25a14f))
+
 ## [0.7.0](https://github.com/0nb/sigil/compare/v0.6.0...v0.7.0) (2026-10-28)
 
 
