@@ -6,6 +6,8 @@
     label: string;
     align?: 'left' | 'right';
     dim?: boolean;
+    /** a column of buttons: its header is for screen readers, and phones don't label its cells */
+    action?: boolean;
     cell?: Snippet<[T]>;
   };
 
@@ -33,7 +35,8 @@
       {#each columns as col (col.key)}
         <th
           scope="col"
-          class="sg-th {col.align === 'right' ? 'pl-4 text-right' : 'pr-4 text-left'}">{col.label}</th
+          class="sg-th {col.align === 'right' ? 'pl-4 text-right' : 'pr-4 text-left'}"
+          >{#if col.action}<span class="sr-only">{col.label}</span>{:else}{col.label}{/if}</th
         >
       {/each}
     </tr>
@@ -44,7 +47,7 @@
         {#each columns as col (col.key)}
           {@const v = valueOf(row, col)}
           <td
-            data-label={col.label}
+            data-label={col.action ? null : col.label}
             title={col.cell ? null : (v as string)}
             class="sg-td truncate {col.align === 'right' ? 'sg-td-r' : 'pr-4'} {col.dim ? 'text-dim' : 'text-fg'}"
           >
