@@ -37,6 +37,7 @@
     { id: 'b', short: '/horizon', dest: '0nb.dev', clicks: 412 },
     { id: 'c', short: '/q3vbn8w', dest: 'docs.google.com/document/d/' + 'x'.repeat(300), clicks: 9 },
   ];
+  const keys = [{ id: 'k1', name: 'deploy script', used: 'today' }, { id: 'k2', name: 'iphone shortcut', used: 'never' }];
   const columns = [
     { key: 'short', label: 'short' },
     { key: 'dest', label: 'destination', dim: true },
@@ -113,6 +114,9 @@
         {#if answered}<Line kind="ok">answered {answered}.</Line>{:else}<Confirm question="delete fld.0nb.dev/x7kq2mp?" onyes={() => (answered = "delete")} onno={() => (answered = "keep")} />{/if}
       </div>
       <Card as="section"><Ls caption="links" {columns} {rows} key={(r) => r.id} /></Card>
+      <Ls caption="api keys" rows={keys} key={(k) => k.id}
+        columns={[{ key: 'name', label: 'name' }, { key: 'used', label: 'last used', dim: true }, { key: 'id', label: 'revoke', align: 'right', action: true, cell: revoke }]} />
+      {#snippet revoke(/** @type {{ name: string }} */ k)}<Button type="button" variant="ghost" size="small" label="revoke {k.name}">revoke</Button>{/snippet}
       <Ls caption="no links" {columns} rows={noRows} key={(r) => r.id}>
         {#snippet empty()}<Empty title="no links yet" hint="paste a url above and press enter." />{/snippet}
       </Ls>

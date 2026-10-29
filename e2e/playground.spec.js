@@ -196,3 +196,13 @@ test('a flap folds once, within five seconds, and rests on the short side', asyn
     expect(s.fill).toBe('both');
   }
 });
+
+test('on a phone, a cell is labelled by its column, an action cell is not', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  // phones stack the cells as blocks; reach them by markup, not by table role
+  const cells = page.locator('table:has(caption:text-is("api keys")) tbody tr').first().locator('td');
+  const before = (i) => cells.nth(i).evaluate((td) => getComputedStyle(td, '::before').content);
+  expect(await before(0)).toBe('"name"');
+  expect(await before(2)).toBe('none');
+});

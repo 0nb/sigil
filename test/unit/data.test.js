@@ -31,6 +31,24 @@ test('Ls truncates long values and keeps them in title', () => {
   expect(screen.getByTitle(rows[1].dest)).toHaveClass('truncate');
 });
 
+test('an action column keeps its header for screen readers only, and labels no cell on phones', () => {
+  const { container } = render(Ls, {
+    props: {
+      caption: 'keys',
+      rows,
+      key: (r) => r.id,
+      columns: [
+        { key: 'short', label: 'short' },
+        { key: 'id', label: 'revoke', align: 'right', action: true, cell: snip('<button type="button">revoke</button>') },
+      ],
+    },
+  });
+  expect(within(screen.getByRole('columnheader', { name: 'revoke' })).getByText('revoke')).toHaveClass('sr-only');
+  const [cell, action] = container.querySelectorAll('tbody tr:first-child td');
+  expect(cell).toHaveAttribute('data-label', 'short');
+  expect(action).not.toHaveAttribute('data-label');
+});
+
 test('Readout lists key value pairs', () => {
   render(Readout, { props: { items: [{ key: 'clicks', value: 1284 }, { key: 'created', value: '3d' }] } });
   expect(screen.getByText('clicks').tagName).toBe('DT');
