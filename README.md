@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 ```json
-"@0nb/sigil": "github:0nb/sigil#v0.8.0"
+"@0nb/sigil": "github:0nb/sigil#v0.8.1"
 ```
 <!-- x-release-please-end -->
 
