@@ -1,5 +1,12 @@
 # changelog
 
+## [0.8.1](https://github.com/0nb/sigil/compare/v0.8.0...v0.8.1) (2026-10-29)
+
+
+### fixes
+
+* Ls action columns are as wide as their buttons ([#17](https://github.com/0nb/sigil/issues/17)) ([34c9bf4](https://github.com/0nb/sigil/commit/34c9bf434819be82b4ecd2155ca7983c8742b26c))
+
 ## [0.8.0](https://github.com/0nb/sigil/compare/v0.7.0...v0.8.0) (2026-10-29)
 
 
