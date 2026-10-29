@@ -49,7 +49,7 @@
           <td
             data-label={col.action ? null : col.label}
             title={col.cell ? null : (v as string)}
-            class="sg-td truncate {col.align === 'right' ? 'sg-td-r' : 'pr-4'} {col.dim ? 'text-dim' : 'text-fg'}"
+            class="sg-td {col.action ? 'whitespace-nowrap' : 'truncate'} {col.align === 'right' ? 'sg-td-r' : 'pr-4'} {col.dim ? 'text-dim' : 'text-fg'}"
           >
             {#if col.cell}{@render col.cell(row)}{:else}{v}{/if}
           </td>

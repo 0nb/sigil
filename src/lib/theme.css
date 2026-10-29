@@ -210,10 +210,11 @@
   @apply border-b border-rule pb-2 text-label font-normal text-dim;
 }
 @utility sg-td {
-  @apply max-w-0 py-3 max-sm:block max-sm:py-0.5 max-sm:max-w-full;
-  /* on phones each cell says its column first; an action cell (a button) needs no label */
+  @apply py-3 max-sm:block max-sm:py-0.5;
+  /* a text cell shares the row's width and truncates, and on phones says its column first. an action cell (a
+     button, no data-label) keeps its button's width and needs no label */
   &[data-label] {
-    @apply max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
+    @apply max-w-0 max-sm:max-w-full max-sm:before:mr-[2ch] max-sm:before:text-dim max-sm:before:content-[attr(data-label)];
   }
 }
 @utility sg-td-r {
